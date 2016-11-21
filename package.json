@@ -1,0 +1,31 @@
+{
+  "name": "meeting-analytics",
+  "version": "0.0.1",
+  "description": "Analytics on meetings and events attendance",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julestechting/meeting-analytics.git"
+  },
+  "keywords": [
+    "analytics",
+    "meeting",
+    "event",
+    "nodejs",
+    "express",
+    "react",
+    "elasticsearch"
+  ],
+  "author": "Jules Tech Consulting",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/julestechting/meeting-analytics/issues"
+  },
+  "homepage": "https://github.com/julestechting/meeting-analytics#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
