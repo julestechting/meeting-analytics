@@ -1,7 +1,8 @@
 var express = require('express'),
+    path = require('path')
     app = express();
 
-app.use(express.static('static'));
+app.use(express.static(path.join(__dirname,'../shared/static')));
 
 app.set('port', process.env.PORT || 3000);
 
