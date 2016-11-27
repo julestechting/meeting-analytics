@@ -4,6 +4,7 @@ var MAHeader = React.createClass({
 
     propTypes: {
       topMessage: React.PropTypes.string.isRequired,
+      title: React.PropTypes.string.isRequired,
     },
 
     getInitialState: function () {
@@ -22,7 +23,13 @@ var MAHeader = React.createClass({
         return (
             <div>
               <div style={topMessageStyle}>Message - {this.props.topMessage}</div>
-              <div>Head</div>
+              <div>
+                <ul>
+                  <li><a href="/">{this.props.title}</a></li>
+                  <li><a href="/login">Login</a></li>
+                  <li><a href="/preferences">Preferences</a></li>
+                </ul>
+              </div>
             </div>
         );
     }
