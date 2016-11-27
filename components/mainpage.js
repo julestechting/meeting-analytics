@@ -5,14 +5,17 @@ var MAFooter = require('./footer');
 var MainPage = React.createClass({
 
     getInitialState: function () {
-      return {topMessage: ""};
+      return {
+        topMessage: "",
+        title: "Meeting Analytics",
+      };
     },
 
     render: function () {
         const topMessage = this.state.topMessage;
         return (
             <div>
-              <MAHeader topMessage={this.state.topMessage}/>
+              <MAHeader topMessage={this.state.topMessage} title={this.state.title}/>
               <MAFooter />
             </div>
         );
