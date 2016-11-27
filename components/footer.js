@@ -9,7 +9,7 @@ var MAFooter = React.createClass({
         };
 
         return (
-            <footer className="w3-container w3-black w3-center w3-tiny">
+            <footer className="w3-container w3-black w3-tiny">
                 <img src="img/logo.png" className="w3-circle w3-show-inline-block" style={logoStyle} alt="Logo" />
                 <div className="w3-show-inline-block">
                   <span>Powered by </span>
