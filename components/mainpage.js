@@ -1,5 +1,6 @@
 var React = require('react');
 var MAHeader = require('./header');
+var MAMain = require('./main');
 var MAFooter = require('./footer');
 
 var MainPage = React.createClass({
@@ -12,11 +13,12 @@ var MainPage = React.createClass({
     },
 
     render: function () {
-        const topMessage = this.state.topMessage;
+
         return (
             <div>
               <MAHeader topMessage={this.state.topMessage} title={this.state.title}/>
-              <MAFooter />
+              <MAMain/>
+              <MAFooter/>
             </div>
         );
     }
