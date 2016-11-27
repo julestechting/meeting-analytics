@@ -1,14 +1,18 @@
 var React = require('react');
+var MAHeader = require('./header');
 var MAFooter = require('./footer');
 
 var MainPage = React.createClass({
 
+    getInitialState: function () {
+      return {topMessage: ""};
+    },
+
     render: function () {
+        const topMessage = this.state.topMessage;
         return (
             <div>
-              <header className="w3-container w3-teal">
-                <h1>Hello World!</h1>
-              </header>
+              <MAHeader topMessage={this.state.topMessage}/>
               <MAFooter />
             </div>
         );
