@@ -11,17 +11,26 @@ var MAMain = React.createClass({
     },
 
     submitIcs: function(event) {
-      alert('File '+ this.state.icsFile.value + ' has been submitted');
+      alert(this.state.icsFile.value);
+      //todo
       event.preventDefault();
     },
 
+    transferClick: function(event) {
+      this.refs.fileRef.click();
+    },
+
     render: function () {
+        var invisibleStyle = {
+          display: 'none',
+        };
 
         return (
             <form onSubmit={this.submitIcs}>
               Upload ics file<br/>
-              <input type="file" name="input" accept="text/calendar" onChange={this.selectIcs} /><br/>
-              <input type="submit" value="Upload" />
+              <input type="image" name="input-img" src="img/logo.png" onClick={this.transferClick} /><br />
+              <input type="file" ref="fileRef" accept="text/calendar" onChange={this.selectIcs} required style={invisibleStyle} />
+              <input type="submit" name="submit" value="Upload" />
             </form>
         );
     }
