@@ -12,12 +12,16 @@ var MainPage = React.createClass({
       };
     },
 
+    updateTopMessageHandler (text) {
+      this.setState({topMessage: text});
+    },
+
     render: function () {
 
         return (
             <div>
               <MAHeader topMessage={this.state.topMessage} title={this.state.title}/>
-              <MAMain/>
+              <MAMain updateTopMessageHandler={this.updateTopMessageHandler}/>
               <MAFooter/>
             </div>
         );
