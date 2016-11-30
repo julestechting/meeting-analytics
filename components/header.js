@@ -7,17 +7,13 @@ var MAHeader = React.createClass({
       title: React.PropTypes.string.isRequired,
     },
 
-    getInitialState: function () {
-      var visible = "none";
-      if ( this.props.topMessage != "" ) {
-        visible = "block";
-      }
-      return {visible: visible};
-    },
-
     render: function () {
+        var visible = "none";
+        if ( this.props.topMessage != "" ) {
+          visible = "block";
+        }
         var topMessageStyle = {
-          display: this.state.visible,
+          display: visible,
         };
 
         return (
