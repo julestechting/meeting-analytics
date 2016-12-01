@@ -2,39 +2,50 @@ var React = require('react');
 
 var MAMain = React.createClass({
 
-    propTypes: {
-      updateTopMessageHandler: React.PropTypes.func.isRequired,
-    },
+  propTypes: {
+    updateTopMessageHandler: React.PropTypes.func.isRequired,
+  },
 
-    getInitialState: function () {
-      return {icsFile: ""};
-    },
+  getInitialState: function () {
+    return {icsFile: ""};
+  },
 
-    selectIcs: function(event) {
-      this.setState({icsFile: event.target});
-      event.preventDefault();
-    },
+  selectIcs: function(event) {
+    event.preventDefault();
+    var reader = new FileReader();
+    var file = event.target.files[0];
+    this.setState({icsFile: "aaaa"});
+    var self = this;
 
-    submitIcs: function(event) {
-      event.preventDefault();
-    },
+    reader.onload = function (upload) {
+      self.setState({icsFile: upload.target.result});
+    };
+    reader.readAsText(file);
+  },
 
-    transferClick: function(event) {
-      this.refs.fileRef.click();
-    },
+  submitIcs: function(event) {
+    event.preventDefault();
+  },
 
-    render: function () {
-        var invisibleStyle = {
-          display: 'none',
-        };
+  transferClick: function(event) {
+    this.refs.fileRef.click();
+  },
 
-        return (
+  render: function () {
+      var invisibleStyle = {
+        display: 'none',
+      };
+
+      return (
+          <div>
             <form onSubmit={this.submitIcs}>
               <input type="image" name="input-img" src="img/logo.png" onClick={this.transferClick} /><br />
-              <input type="file" ref="fileRef" accept="text/calendar" onChange={this.selectIcs} style={invisibleStyle} />
+              <input type="file" enctype="multipart/form-data" ref="fileRef" accept="text/calendar" onChange={this.selectIcs} style={invisibleStyle} />
             </form>
-        );
-    }
+            <div>{this.state.icsFile}</div>
+          </div>
+      );
+  }
 });
 
 module.exports = MAMain;
