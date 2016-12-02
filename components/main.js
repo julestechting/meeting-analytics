@@ -14,13 +14,27 @@ var MAMain = React.createClass({
     event.preventDefault();
     var reader = new FileReader();
     var file = event.target.files[0];
-    this.setState({icsFile: "aaaa"});
     var self = this;
 
-    reader.onload = function (upload) {
-      self.setState({icsFile: upload.target.result});
-    };
-    reader.readAsText(file);
+    if (file.type.match('text/*')) {
+      reader.onload = function (upload) {
+        var dataURL = upload.target.result;
+        try {
+          var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0];
+          if (mimeType.search("VCALENDAR") != -1) {
+            var calArray = dataURL.replace(new RegExp( "\\r\\n\\s", "g" ), "").split("\n");
+            self.setState({icsFile: calArray});
+          }
+        }
+        catch (err) {
+          //do nothing
+        }
+      };
+      reader.readAsText(file);
+    }
+    if (this.state.icsFile == "" ) {
+      this.setState({icsFile: file.name + " does not meet iCalendar format"});
+    }
   },
 
   submitIcs: function(event) {
@@ -28,6 +42,7 @@ var MAMain = React.createClass({
   },
 
   transferClick: function(event) {
+    this.setState({icsFile: ""});
     this.refs.fileRef.click();
   },
 
