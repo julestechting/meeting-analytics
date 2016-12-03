@@ -20,7 +20,7 @@ var MAMain = React.createClass({
     return (
         <div>
           <ul>
-            <li><MAIcsForm updateMeetingList={this.updateMeetingList}/></li>
+            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateTopMessageHandler={this.props.updateTopMessageHandler}/></li>
             <li>Icon2</li>
             <li>Icon3</li>
           </ul>

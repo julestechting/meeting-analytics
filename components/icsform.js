@@ -4,6 +4,7 @@ var MAIcsForm = React.createClass({
 
   propTypes: {
     updateMeetingList: React.PropTypes.func.isRequired,
+    updateTopMessageHandler: React.PropTypes.func.isRequired,
   },
 
   makeDate: function (tz, icsDate, long) {
@@ -116,12 +117,12 @@ var MAIcsForm = React.createClass({
           }
         }
         catch (err) {
-          alert(file.name + " does not meet iCalendar format");
+           self.props.updateTopMessageHandler(file.name + " does not meet iCalendar format");
         }
       };
       reader.readAsText(file);
     } else {
-      alert(file.name + " does not meet iCalendar format");
+      this.props.updateTopMessageHandler(file.name + " does not meet iCalendar format");
     }
   },
 
@@ -131,6 +132,7 @@ var MAIcsForm = React.createClass({
 
   transferClick: function(event) {
     this.props.updateMeetingList("");
+    this.props.updateTopMessageHandler("");
     this.refs.fileRef.click();
   },
 
