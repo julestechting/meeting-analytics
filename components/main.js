@@ -8,11 +8,11 @@ var MAMain = React.createClass({
   },
 
   getInitialState: function () {
-    return {icsFile: ""};
+    return {meetingList: []};
   },
 
-  updateIcsFile: function (array) {
-    this.setState({icsFile: array});
+  updateMeetingList: function (array) {
+    this.setState({meetingList: array});
   },
 
   render: function () {
@@ -20,11 +20,11 @@ var MAMain = React.createClass({
     return (
         <div>
           <ul>
-            <li><MAIcsForm updateIcsFile={this.updateIcsFile}/></li>
+            <li><MAIcsForm updateMeetingList={this.updateMeetingList}/></li>
             <li>Icon2</li>
             <li>Icon3</li>
           </ul>
-          <div>{this.state.icsFile}</div>
+          <div>Hello</div>
         </div>
     );
   }
