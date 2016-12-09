@@ -69,18 +69,25 @@ var MAIcsForm = React.createClass({
           }
         }
       }
-      if ( calArray[i].startsWith("END:VTIMEZONE") ) {
+      switch (calArray[i]) {
+        case "END:VTIMEZONE":
           state = "";
-      } else if ( calArray[i].startsWith("END:VEVENT") ) {
+          break;
+        case "END:VEVENT":
           state = "";
           a = 0;
           if ( meeting.attendees.length > 0 ) {
             meetingList[m] = meeting;
             m++;
           }
-      } else if ( calArray[i].startsWith("BEGIN:VTIMEZONE") ) {
+          break;
+        case "END:VALARM":
+          state = "VEVENT";
+          break;
+        case "BEGIN:VTIMEZONE":
           state = "VTIMEZONE";
-      } else if ( calArray[i].startsWith("BEGIN:VEVENT") ) {
+          break;
+        case "BEGIN:VEVENT":
           state = "VEVENT";
           meeting = {
             date: null,
@@ -90,11 +97,10 @@ var MAIcsForm = React.createClass({
             description: "",
             location: ""
           };
-      } else if (calArray[i].startsWith("BEGIN:VALARM") ) {
+          break;
+        case "BEGIN:VALARM":
           state = "VALARM";
-      }
-      else if (calArray[i].startsWith("END:VALARM") ) {
-          state = "VEVENT";
+          break;
       }
     }
     this.props.updateMeetingList(meetingList);
@@ -112,7 +118,7 @@ var MAIcsForm = React.createClass({
         try {
           var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0];
           if (mimeType.search("VCALENDAR") != -1) {
-            var calArray = dataURL.replace(new RegExp( "\\r\\n\\s", "g" ), "").split("\n");
+            var calArray = dataURL.replace(new RegExp( "\\n\\s", "g" ), "").replace(new RegExp( "\\r", "g" ), "").split("\n");
             self.parseIcs(calArray);
           }
         }
