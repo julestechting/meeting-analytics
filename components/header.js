@@ -8,15 +8,6 @@ var MAHeader = React.createClass({
     },
 
     render: function () {
-        /*
-        var visible = "none";
-        if ( this.props.topMessage != "" ) {
-          visible = "block";
-        }
-        var topMessageStyle = {
-          display: visible,
-        };
-        */
         return (
             <div>
               <div>
