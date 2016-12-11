@@ -5,6 +5,10 @@ var MAFooter = require('./footer');
 
 var MainPage = React.createClass({
 
+    propTypes: {
+      docURL: React.PropTypes.string.isRequired
+    },
+
     getInitialState: function () {
       return {
         topMessage: "",
@@ -21,7 +25,7 @@ var MainPage = React.createClass({
         return (
             <div>
               <MAHeader topMessage={this.state.topMessage} title={this.state.title}/>
-              <MAMain updateTopMessageHandler={this.updateTopMessageHandler}/>
+              <MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL}/>
               <MAFooter/>
             </div>
         );

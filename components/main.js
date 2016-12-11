@@ -5,6 +5,7 @@ var MAMain = React.createClass({
 
   propTypes: {
     updateTopMessageHandler: React.PropTypes.func.isRequired,
+    docURL: React.PropTypes.string.isRequired
   },
 
   getInitialState: function () {
@@ -20,7 +21,7 @@ var MAMain = React.createClass({
     return (
         <div>
           <ul>
-            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateTopMessageHandler={this.props.updateTopMessageHandler}/></li>
+            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateTopMessageHandler={this.props.updateTopMessageHandler} docURL={this.props.docURL}/></li>
             <li>Icon2</li>
             <li>Icon3</li>
           </ul>

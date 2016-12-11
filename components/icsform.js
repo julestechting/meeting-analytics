@@ -1,129 +1,40 @@
 var React = require('react');
+var fetch = require('node-fetch');
 
 var MAIcsForm = React.createClass({
 
   propTypes: {
     updateMeetingList: React.PropTypes.func.isRequired,
     updateTopMessageHandler: React.PropTypes.func.isRequired,
-  },
-
-  makeDate: function (tz, icsDate, long) {
-    return icsDate;
-  },
-
-  parseIcs: function (calArray) {
-    var meetingList = [];
-    var meeting;
-    var m = 0, // meeting number in meetingList
-        a = 0; // attendee number in meeting
-    var state = "",
-        tz="UTC";
-    for ( var i=0; i<calArray.length; i++ ) {
-      if ( state != "") {
-        var tag = calArray[i].split(':')[0];
-        var val = calArray[i].split(':')[1];
-        if ( tag == "TZID" && state == "VTIMEZONE") {
-          tz = val;
-        }
-        if ( state == "VEVENT") {
-          switch (tag) {
-            case "DTSTART;VALUE=DATE":
-              meeting.date = this.makeDate(tz,val,false);
-              break;
-            case "DTSTART":
-              meeting.date = this.makeDate(tz,val,true);
-              break;
-            case "SUMMARY":
-              meeting.summary = val;
-              break;
-            case "LOCATION":
-              meeting.location = val;
-              break;
-            case "DESCRIPTION":
-              meeting.description = val;
-              break;
-            default:
-              val = calArray[i].split(';');
-              if ( val[0] == "ORGANIZER" ) {
-                meeting.organizer = {
-                  cn: val[1].split(':')[0].replace("CN=",""),
-                  mail: val[1].split(':')[2] // ignore mailto
-                }
-              } else if ( val[0] == "ATTENDEE" ) {
-                  var attendee = {
-                    name: "",
-                    role: "",
-                    accept: "",
-                    mail: ""
-                  }
-                  for (var j=0;j< val.length;j++) {
-                    var pair = val[j].split("=");
-                    if ( pair[0] == "ROLE" ) { attendee.role = pair[1]; }
-                    else if ( pair[0] == "PARTSTAT") { attendee.accept = pair[1]; }
-                    else if ( pair[0] == "CN" ) { attendee.name = pair[1]; }
-                    else if ( pair[0] == "X-NUM-GUESTS") { attendee.mail = pair[1].split(':')[2]; }
-                  }
-                  meeting.attendees[a] = attendee;
-                  a++;
-              }
-          }
-        }
-      }
-      switch (calArray[i]) {
-        case "END:VTIMEZONE":
-          state = "";
-          break;
-        case "END:VEVENT":
-          state = "";
-          a = 0;
-          if ( meeting.attendees.length > 0 ) {
-            meetingList[m] = meeting;
-            m++;
-          }
-          break;
-        case "END:VALARM":
-          state = "VEVENT";
-          break;
-        case "BEGIN:VTIMEZONE":
-          state = "VTIMEZONE";
-          break;
-        case "BEGIN:VEVENT":
-          state = "VEVENT";
-          meeting = {
-            date: null,
-            organizer: null,
-            attendees: [],
-            summary: "",
-            description: "",
-            location: ""
-          };
-          break;
-        case "BEGIN:VALARM":
-          state = "VALARM";
-          break;
-      }
-    }
-    this.props.updateMeetingList(meetingList);
+    docURL: React.PropTypes.string.isRequired
   },
 
   selectIcs: function(event) {
     event.preventDefault();
-    var reader = new FileReader();
     var file = event.target.files[0];
-    var self = this;
 
-    if (file.type.match('text/*')) {
+    if (file.size > 0 && file.type.match('text/*')) {
+      var self = this;
+      var reader = new FileReader();
+      var meetingList = [];
       reader.onload = function (upload) {
         var dataURL = upload.target.result;
         try {
           var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0];
           if (mimeType.search("VCALENDAR") != -1) {
-            var calArray = dataURL.replace(new RegExp( "\\n\\s", "g" ), "").replace(new RegExp( "\\r", "g" ), "").split("\n");
-            self.parseIcs(calArray);
+            fetch(self.props.docURL + 'api/ics', {
+              method: 'POST',
+              header: {'Content-Type': 'text/plain'},
+              body: dataURL})
+               .then(function (res) {
+                 return res.json().then(function (json) {
+                   self.props.updateMeetingList(json);
+                 })
+               });
           }
         }
         catch (err) {
-           self.props.updateTopMessageHandler(file.name + " does not meet iCalendar format");
+           self.props.updateMeetingList([]);
         }
       };
       reader.readAsText(file);
@@ -137,7 +48,7 @@ var MAIcsForm = React.createClass({
   },
 
   transferClick: function(event) {
-    this.props.updateMeetingList("");
+    this.props.updateMeetingList([]);
     this.props.updateTopMessageHandler("");
     this.refs.fileRef.click();
   },
