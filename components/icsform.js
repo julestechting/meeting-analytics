@@ -60,7 +60,7 @@ var MAIcsForm = React.createClass({
 
       return (
         <form onSubmit={this.submitIcs}>
-          <input type="image" name="input-img" src="img/logo.png" onClick={this.transferClick} /><br />
+          <input type="image" name="input-img" src="img/upload.png" onClick={this.transferClick} /><br />
           <input type="file" encType="multipart/form-data" ref="fileRef" accept="text/calendar" onChange={this.selectIcs} style={invisibleStyle} />
         </form>
       );
