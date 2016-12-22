@@ -20,10 +20,10 @@ exports.icsParse = function (icsData) {
         var tag = calArray[i].split(':')[0];
         //var val = calArray[i].split(':')[1];
         var val = calArray[i].substring(tag.length+1,calArray[i].length);
-        if ( tag == "TZID" && state == "VTIMEZONE") {
+        if ( tag == "TZID" && state == "VTIMEZONE" ) {
           tz = val;
         }
-        if ( state == "VEVENT") {
+        if ( state == "VEVENT" ) {
           switch (tag) {
             case "DTSTART;VALUE=DATE":
             case "DTSTART":case "DTSTART":
