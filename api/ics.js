@@ -1,8 +1,10 @@
+var moment = require('moment-timezone');
+
 exports.icsParse = function (icsData) {
 
   // makeDate: Convert text string to Date object in UTC format
-  var makeDate = function (tz, icsDate, long) {
-    return icsDate;
+  var makeDate = function (tmz, icsDate) {
+    return moment.tz(icsDate,tmz).tz('utc').format();
   };
 
   // parseIcs: Parse ics file and return meetingList object
@@ -23,10 +25,8 @@ exports.icsParse = function (icsData) {
         if ( state == "VEVENT") {
           switch (tag) {
             case "DTSTART;VALUE=DATE":
-              meeting.date = makeDate(tz,val,false);
-              break;
-            case "DTSTART":
-              meeting.date = makeDate(tz,val,true);
+            case "DTSTART":case "DTSTART":
+              meeting.date = makeDate(tz,val);
               break;
             case "SUMMARY":
               meeting.summary = val;
