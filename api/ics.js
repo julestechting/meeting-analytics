@@ -18,7 +18,8 @@ exports.icsParse = function (icsData) {
     for ( var i=0; i<calArray.length; i++ ) {
       if ( state != "") {
         var tag = calArray[i].split(':')[0];
-        var val = calArray[i].split(':')[1];
+        //var val = calArray[i].split(':')[1];
+        var val = calArray[i].substring(tag.length+1,calArray[i].length);
         if ( tag == "TZID" && state == "VTIMEZONE") {
           tz = val;
         }
