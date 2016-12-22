@@ -1,5 +1,6 @@
 var React = require('react');
 var MAIcsForm = require('./icsform');
+var MACentralICS = require('./central-ics');
 
 var MAMain = React.createClass({
 
@@ -9,23 +10,43 @@ var MAMain = React.createClass({
   },
 
   getInitialState: function () {
-    return {meetingList: []};
+    return {
+      meetingList: [],
+      centralPanel: -1,
+    };
   },
 
   updateMeetingList: function (array) {
     this.setState({meetingList: array});
   },
 
+  updateCentralPanel: function (val) {
+    this.setState({centralPanel: val});
+  },
+
   render: function () {
-    // In the future, use React.route to define which form type to use - for now, only ics is
+
+    const centralPanel = this.state.centralPanel;
+    let centralDisplay = null;
+    if (centralPanel == 0) {
+      centralDisplay = (<MACentralICS meetingList={this.state.meetingList}/>);
+    } else {
+      centralDisplay = (
+        <div>
+          <h2>Welcome to Behaviour Analytics</h2>
+          <p>Select one function</p>
+        </div>
+      );
+    }
+
     return (
         <div>
           <ul>
-            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateTopMessageHandler={this.props.updateTopMessageHandler} docURL={this.props.docURL}/></li>
+            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateCentralPanel={this.updateCentralPanel} updateTopMessageHandler={this.props.updateTopMessageHandler} docURL={this.props.docURL}/></li>
             <li>Icon2</li>
             <li>Icon3</li>
           </ul>
-          <div>Hello</div>
+          {centralDisplay}
         </div>
     );
   }

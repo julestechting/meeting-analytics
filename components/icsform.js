@@ -5,6 +5,7 @@ var MAIcsForm = React.createClass({
 
   propTypes: {
     updateMeetingList: React.PropTypes.func.isRequired,
+    updateCentralPanel: React.PropTypes.func.isRequired,
     updateTopMessageHandler: React.PropTypes.func.isRequired,
     docURL: React.PropTypes.string.isRequired
   },
@@ -49,6 +50,7 @@ var MAIcsForm = React.createClass({
 
   transferClick: function(event) {
     this.props.updateMeetingList([]);
+    this.props.updateCentralPanel(0);
     this.props.updateTopMessageHandler("");
     this.refs.fileRef.click();
   },
