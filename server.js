@@ -4,8 +4,11 @@ var express = require('express'),
   bodyParser = require("body-parser"),
   api = require('./api/api');
 
-app.use(bodyParser.text());
-//app.use(bodyParser.json());
+/*app.use(bodyParser.text());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));*/
+app.use(bodyParser.text( {type: 'text/plain'} ));
+app.use(bodyParser.json( {type: 'application/json'} ));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', api);
 
