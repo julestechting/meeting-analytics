@@ -29,9 +29,11 @@ var MainPage = React.createClass({
          .then(function (res) {
            if (res) {
              return res.json().then(function (json) {
-               self.setState({ehost: json.host});
-               self.setState({eport: parseInt(json.port)});
-               self.setState({evalidate: true});
+               self.setState({
+                 ehost: json.host,
+                 eport: parseInt(json.port),
+                 evalidate: true
+               });
            })}
          });
     },

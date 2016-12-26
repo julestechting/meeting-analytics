@@ -8,14 +8,17 @@ router.post ('/ics', function (req, res) {
   res.json(ics.icsParse(req.body));
 });
 
-// Elasticsearch cluster settings
-router.get ('/client', function (req, res) {
-  res.json(client.getClient());
-});
+// Elasticsearch settings
+router.route ('/client')
+  .get (function (req, res) {
+    res.json(client.getClient());
+  })
 
-router.post ('/client', function (req, res) {
-  res.json(client.setClient(req.body));
-});
+  .post (function (req, res) {
+    res.json(client.setClient(req.body));
+  });
+
+// Elasticsearch operation
 
 // Default
 router.get ('/', function (req, res) {
