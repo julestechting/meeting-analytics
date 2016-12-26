@@ -1,4 +1,3 @@
-var client = require('elasticsearch');
 var fs = require('fs');
 var path = require('path');
 

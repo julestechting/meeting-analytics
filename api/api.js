@@ -1,6 +1,6 @@
 var express = require('express'),
     router = express.Router(),
-    ics = require('./ics')
+    ics = require('./ics'),
     client = require('./client');
 
 // ICS file parsing
@@ -8,7 +8,7 @@ router.post ('/ics', function (req, res) {
   res.json(ics.icsParse(req.body));
 });
 
-// Elasticsearch settings
+// Elasticsearch get/set settings
 router.route ('/client')
   .get (function (req, res) {
     res.json(client.getClient());
@@ -17,8 +17,6 @@ router.route ('/client')
   .post (function (req, res) {
     res.json(client.setClient(req.body));
   });
-
-// Elasticsearch operation
 
 // Default
 router.get ('/', function (req, res) {

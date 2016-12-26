@@ -1,5 +1,6 @@
 var React = require('react');
 var fetch = require('node-fetch');
+var elasticsearch = require('elasticsearch');
 
 // Import components
 var MAHeader = require('./header');
@@ -21,6 +22,21 @@ var MainPage = React.createClass({
       };
     },
 
+    validateEClient: function () {
+      var self = this;
+      var connect_id = this.state.ehost+':'+this.state.eport;
+      alert(connect_id);
+      var client = new elasticsearch.Client({host: connect_id, log: 'trace'});
+      client.ping ({requestTimeout: 3000}, function (error) {
+        if ( error ) {
+          alert(error);
+          self.setState({evalidate: false});
+        } else {
+          self.setState({evalidate: true});
+        }
+      });
+    },
+
     componentDidMount: function () {
       // Retrieve Elastic settings
       var self = this;
@@ -31,9 +47,9 @@ var MainPage = React.createClass({
              return res.json().then(function (json) {
                self.setState({
                  ehost: json.host,
-                 eport: parseInt(json.port),
-                 evalidate: true
+                 eport: parseInt(json.port)
                });
+               self.validateEClient();
            })}
          });
     },
@@ -58,7 +74,7 @@ var MainPage = React.createClass({
          });
     },
 
-    updateEClient: function (event) {
+    handleUpdateEClient: function (event) {
       if ( event.target.name == "host" ) {
           this.setState({ehost: event.target.value});
       } else if ( event.target.name == "port" ) {
@@ -91,10 +107,10 @@ var MainPage = React.createClass({
             <p>Please provide the Elasticsearch connection settings</p>
             <form onSubmit={this.handleESubmit}>
               <label>Host:
-                <input type="text" name="host" value={this.state.ehost} onChange={this.updateEClient} required/>
+                <input type="text" name="host" value={this.state.ehost} onChange={this.handleUpdateEClient} required/>
               </label>
               <label>Port:
-                <input type="number" name="port" min="1" value={this.state.eport}onChange={this.updateEClient} required/>
+                <input type="number" name="port" min="1" value={this.state.eport}onChange={this.handleUpdateEClient} required/>
               </label>
               <input type="submit" name="submit" value="Submit"/>
             </form>
