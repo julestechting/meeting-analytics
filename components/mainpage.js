@@ -28,7 +28,6 @@ var MainPage = React.createClass({
       var client = new elasticsearch.Client({host: connect_id, log: 'error'});
       client.ping ({requestTimeout: 3000}, function (error) {
         if ( error ) {
-          alert(error);
           self.setState({evalidate: false});
         } else {
           self.setState({evalidate: true});
@@ -36,7 +35,7 @@ var MainPage = React.createClass({
       });
     },
 
-    componentDidMount: function () {
+    componentWillMount: function () {
       // Retrieve Elastic settings
       var self = this;
       fetch(this.props.docURL + 'api/client', {
