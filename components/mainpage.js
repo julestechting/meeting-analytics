@@ -18,18 +18,34 @@ var MainPage = React.createClass({
         title: "Meeting Analytics",
         ehost: "",
         eport: 0,
-        evalidate: false
+        evalidate: false,
+        indices: ["meeting", "param"]
       };
+    },
+
+    checkAndInitIndices: function () {
+      var self = this;
+      var connect_id = self.state.ehost + ':' + self.state.eport;
+      var client = new elasticsearch.Client({host: connect_id, log: 'error'});
+      this.state.indices.map(function (ind) {
+        client.indices.exists({index: ind})
+          .then(function (res) {
+            if ( !res ) {
+              client.indices.create({index: ind}, null);
+            }
+          })
+      });
     },
 
     validateEClient: function () {
       var self = this;
-      var connect_id = this.state.ehost+':'+this.state.eport;
+      var connect_id = this.state.ehost + ':' + this.state.eport;
       var client = new elasticsearch.Client({host: connect_id, log: 'error'});
       client.ping ({requestTimeout: 3000}, function (error) {
         if ( error ) {
           self.setState({evalidate: false});
         } else {
+          self.checkAndInitIndices();
           self.setState({evalidate: true});
         }
       });
