@@ -1,14 +1,11 @@
 var express = require('express'),
   path = require('path'),
   app = express(),
-  bodyParser = require("body-parser"),
+  bodyParser = require('body-parser'),
   api = require('./api/api');
 
-/*app.use(bodyParser.text());
+app.use(bodyParser.text());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));*/
-app.use(bodyParser.text( {type: 'text/plain'} ));
-app.use(bodyParser.json( {type: 'application/json'} ));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', api);
 

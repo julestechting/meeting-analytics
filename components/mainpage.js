@@ -25,8 +25,7 @@ var MainPage = React.createClass({
     validateEClient: function () {
       var self = this;
       var connect_id = this.state.ehost+':'+this.state.eport;
-      alert(connect_id);
-      var client = new elasticsearch.Client({host: connect_id, log: 'trace'});
+      var client = new elasticsearch.Client({host: connect_id, log: 'error'});
       client.ping ({requestTimeout: 3000}, function (error) {
         if ( error ) {
           alert(error);
@@ -59,13 +58,14 @@ var MainPage = React.createClass({
       var self = this;
       fetch(this.props.docURL + 'api/client', {
         method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
         body: eclient
       })
          .then(function (res) {
            if (res) {
              return res.json().then(function (json) {
                if ( json.status ) {
-                 self.setState({evalidate: true});
+                 self.validateEClient();
                }
                else {
                  updateTopMessageHandler("Unable to update Elasticsearch settings");

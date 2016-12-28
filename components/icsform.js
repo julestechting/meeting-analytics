@@ -25,7 +25,7 @@ var MAIcsForm = React.createClass({
           if (mimeType.search("VCALENDAR") != -1) {
             fetch(self.props.docURL + 'api/ics', {
               method: 'POST',
-              header: {'Content-Type': 'text/plain'},
+              headers: {'Content-Type': 'text/plain'},
               body: dataURL})
                .then(function (res) {
                  return res.json().then(function (json) {
