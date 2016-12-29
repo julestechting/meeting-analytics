@@ -29,13 +29,14 @@ var MAIcsForm = React.createClass({
               body: dataURL})
                .then(function (res) {
                  return res.json().then(function (json) {
+                   self.props.updateCentralPanel(0);
                    self.props.updateMeetingList(json);
                  })
                });
           }
         }
         catch (err) {
-           self.props.updateMeetingList([]);
+           self.props.updateTopMessageHandler(file.name + " does not meet iCalendar format");
         }
       };
       reader.readAsText(file);
@@ -50,7 +51,7 @@ var MAIcsForm = React.createClass({
 
   transferClick: function(event) {
     this.props.updateMeetingList([]);
-    this.props.updateCentralPanel(0);
+    this.props.updateCentralPanel(-1);
     this.props.updateTopMessageHandler("");
     this.refs.fileRef.click();
   },
