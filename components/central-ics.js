@@ -41,9 +41,8 @@ var MACentralICS = React.createClass({
         <form>
           {meetingList.map(function(meeting, idx) {
               return (
-                <label>
+                <label key={idx}>
                   <input
-                    key={idx}
                     name="radio"
                     type="radio"
                     value={idx}
