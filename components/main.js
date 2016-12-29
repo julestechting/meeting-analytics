@@ -6,7 +6,8 @@ var MAMain = React.createClass({
 
   propTypes: {
     updateTopMessageHandler: React.PropTypes.func.isRequired,
-    docURL: React.PropTypes.string.isRequired
+    docURL: React.PropTypes.string.isRequired,
+    connect_id: React.PropTypes.string.isRequired
   },
 
   getInitialState: function () {
@@ -23,13 +24,13 @@ var MAMain = React.createClass({
   updateCentralPanel: function (val) {
     this.setState({centralPanel: val});
   },
-
+  
   render: function () {
 
     const centralPanel = this.state.centralPanel;
     let centralDisplay = null;
     if (centralPanel == 0) {
-      centralDisplay = (<MACentralICS meetingList={this.state.meetingList}/>);
+      centralDisplay = (<MACentralICS meetingList={this.state.meetingList} connect_id={this.props.connect_id}/>);
     } else {
       centralDisplay = (
         <div>

@@ -19,7 +19,7 @@ var MainPage = React.createClass({
         ehost: "",
         eport: 0,
         evalidate: false,
-        indices: ["meeting", "param"]
+        eindices: ["meeting", "param"]
       };
     },
 
@@ -27,7 +27,7 @@ var MainPage = React.createClass({
       var self = this;
       var connect_id = self.state.ehost + ':' + self.state.eport;
       var client = new elasticsearch.Client({host: connect_id, log: 'error'});
-      this.state.indices.map(function (ind) {
+      this.state.eindices.map(function (ind) {
         client.indices.exists({index: ind})
           .then(function (res) {
             if ( !res ) {
@@ -115,7 +115,8 @@ var MainPage = React.createClass({
       // TO FINISH
       let main = null;
       if ( this.state.evalidate ) {
-        main = (<MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL}/>);
+        var connect_id = this.state.ehost + ':' + this.state.eport;
+        main = (<MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL} connect_id={connect_id}/>);
       } else {
         main = (
           <div>
