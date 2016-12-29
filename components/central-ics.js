@@ -10,6 +10,10 @@ var MACentralICS = React.createClass({
     return {numDisplay: -1};
   },
 
+  getLocalDate: function (dateStr) {
+    return new Date(dateStr).toLocaleString();
+  },
+
   displayMeeting: function () {
     if ( this.state.numDisplay > -1 ) {
       const meeting = this.props.meetingList[this.state.numDisplay];
@@ -17,7 +21,7 @@ var MACentralICS = React.createClass({
         <ul>
           <li>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
           <li>Subject: {meeting.summary}</li>
-          <li>Date: {meeting.date}</li>
+          <li>Date: {this.getLocalDate(meeting.date)}</li>
           <li>Location: {meeting.location}</li>
           {meeting.attendees.map(function (attendee, idx) {
             return (<li>Attendee: {attendee.name} ({attendee.mail})</li>);
