@@ -18,6 +18,10 @@ router.route ('/client')
     res.json(client.setClient(req.body));
   });
 
+router.get ('/client/:connect_id', function (req, res) {
+    client.eping(res, req.params.connect_id);
+});
+
 // Default
 router.get ('/', function (req, res) {
     res.send("Welcome to the API!");
