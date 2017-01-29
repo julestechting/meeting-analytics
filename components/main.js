@@ -7,7 +7,8 @@ var MAMain = React.createClass({
   propTypes: {
     updateTopMessageHandler: React.PropTypes.func.isRequired,
     docURL: React.PropTypes.string.isRequired,
-    connect_id: React.PropTypes.string.isRequired
+    connect_id: React.PropTypes.string.isRequired,
+    title: React.PropTypes.string.isRequired
   },
 
   getInitialState: function () {
@@ -24,7 +25,7 @@ var MAMain = React.createClass({
   updateCentralPanel: function (val) {
     this.setState({centralPanel: val});
   },
-  
+
   render: function () {
 
     const centralPanel = this.state.centralPanel;
@@ -34,7 +35,7 @@ var MAMain = React.createClass({
     } else {
       centralDisplay = (
         <div>
-          <h2>Welcome to Behaviour Analytics</h2>
+          <h2>Welcome to {this.props.title}</h2>
           <p>Select one function</p>
         </div>
       );

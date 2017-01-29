@@ -112,11 +112,10 @@ var MainPage = React.createClass({
     },
 
     render: function () {
-      // TO FINISH
       let main = null;
       if ( this.state.evalidate ) {
         var connect_id = this.state.ehost + ':' + this.state.eport;
-        main = (<MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL} connect_id={connect_id}/>);
+        main = (<MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL} connect_id={connect_id} title={this.state.title}/>);
       } else {
         main = (
           <div>
@@ -126,7 +125,7 @@ var MainPage = React.createClass({
                 <input type="text" name="host" value={this.state.ehost} onChange={this.handleUpdateEClient} required/>
               </label>
               <label>Port:
-                <input type="number" name="port" min="1" value={this.state.eport}onChange={this.handleUpdateEClient} required/>
+                <input type="number" name="port" min="1" value={this.state.eport} onChange={this.handleUpdateEClient} required/>
               </label>
               <input type="submit" name="submit" value="Submit"/>
             </form>
