@@ -1,16 +1,16 @@
 var React = require('react');
 
-var MACentralICS = React.createClass({
+var MACentralIcs = React.createClass({
 
   propTypes: {
-    meetingList: React.PropTypes.array.isRequired,
-    connect_id: React.PropTypes.string.isRequired
+    connectId: React.PropTypes.string.isRequired,
+    meetingList: React.PropTypes.array.isRequired
   },
 
   getInitialState: function () {
     return {
-      numDisplay: -1,
-      eindex: "meeting"
+      eIndex: "meeting",
+      numDisplay: -1
     };
   },
 
@@ -104,4 +104,4 @@ var MACentralICS = React.createClass({
   }
 });
 
-module.exports = MACentralICS;
+module.exports = MACentralIcs;

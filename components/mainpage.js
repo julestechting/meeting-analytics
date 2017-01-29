@@ -14,20 +14,20 @@ var MainPage = React.createClass({
     },
     getInitialState: function () {
       return {
-        topMessage: "",
+        eIndices: ["meeting", "param"],
+        eHost: "",
+        ePort: 0,
+        eValidate: false,
         title: "Meeting Analytics",
-        ehost: "",
-        eport: 0,
-        evalidate: false,
-        eindices: ["meeting", "param"]
+        topMessage: ""
       };
     },
 
     checkAndInitIndices: function () {
       var self = this;
-      var connect_id = self.state.ehost + ':' + self.state.eport;
-      var client = new elasticsearch.Client({host: connect_id, log: 'error'});
-      this.state.eindices.map(function (ind) {
+      var connectId = self.state.eHost + ':' + self.state.ePort;
+      var client = new elasticsearch.Client({host: connectId, log: 'error'});
+      this.state.eIndices.map(function (ind) {
         client.indices.exists({index: ind})
           .then(function (res) {
             if ( !res ) {
@@ -39,14 +39,14 @@ var MainPage = React.createClass({
 
     validateEClient: function () {
       var self = this;
-      var connect_id = this.state.ehost + ':' + this.state.eport;
-      var client = new elasticsearch.Client({host: connect_id, log: 'error'});
+      var connectId = this.state.eHost + ':' + this.state.ePort;
+      var client = new elasticsearch.Client({host: connectId, log: 'error'});
       client.ping ({requestTimeout: 3000}, function (error) {
         if ( error ) {
-          self.setState({evalidate: false});
+          self.setState({eValidate: false});
         } else {
           self.checkAndInitIndices();
-          self.setState({evalidate: true});
+          self.setState({eValidate: true});
         }
       });
     },
@@ -60,8 +60,8 @@ var MainPage = React.createClass({
            if (res) {
              return res.json().then(function (json) {
                self.setState({
-                 ehost: json.host,
-                 eport: parseInt(json.port)
+                 eHost: json.host,
+                 ePort: parseInt(json.port)
                });
                self.validateEClient();
            })}
@@ -69,7 +69,7 @@ var MainPage = React.createClass({
     },
 
     setEClient: function () {
-      var eclient = JSON.stringify({host: this.state.ehost, port: this.state.eport});
+      var eclient = JSON.stringify({host: this.state.eHost, port: this.state.ePort});
       var self = this;
       fetch(this.props.docURL + 'api/client', {
         method: 'POST',
@@ -83,7 +83,7 @@ var MainPage = React.createClass({
                  self.validateEClient();
                }
                else {
-                 updateTopMessageHandler("Unable to update Elasticsearch settings");
+                 updateTopMessage("Unable to update Elasticsearch settings");
                }
            })}
          });
@@ -91,9 +91,9 @@ var MainPage = React.createClass({
 
     handleUpdateEClient: function (event) {
       if ( event.target.name == "host" ) {
-          this.setState({ehost: event.target.value});
+          this.setState({eHost: event.target.value});
       } else if ( event.target.name == "port" ) {
-          this.setState({eport: event.target.value});
+          this.setState({ePort: event.target.value});
       } else {
           // Ignore
       }
@@ -107,25 +107,25 @@ var MainPage = React.createClass({
       event.preventDefault();
     },
 
-    updateTopMessageHandler (text) {
+    updateTopMessage (text) {
       this.setState({topMessage: text});
     },
 
     render: function () {
       let main = null;
-      if ( this.state.evalidate ) {
-        var connect_id = this.state.ehost + ':' + this.state.eport;
-        main = (<MAMain updateTopMessageHandler={this.updateTopMessageHandler} docURL={this.props.docURL} connect_id={connect_id} title={this.state.title}/>);
+      if ( this.state.eValidate ) {
+        var connectId = this.state.eHost + ':' + this.state.ePort;
+        main = (<MAMain updateTopMessage={this.updateTopMessage} docURL={this.props.docURL} connectId={connectId} title={this.state.title}/>);
       } else {
         main = (
           <div>
             <p>Please provide the Elasticsearch connection settings</p>
             <form onSubmit={this.handleESubmit}>
               <label>Host:
-                <input type="text" name="host" value={this.state.ehost} onChange={this.handleUpdateEClient} required/>
+                <input type="text" name="host" value={this.state.eHost} onChange={this.handleUpdateEClient} required/>
               </label>
               <label>Port:
-                <input type="number" name="port" min="1" value={this.state.eport} onChange={this.handleUpdateEClient} required/>
+                <input type="number" name="port" min="1" value={this.state.ePort} onChange={this.handleUpdateEClient} required/>
               </label>
               <input type="submit" name="submit" value="Submit"/>
             </form>
