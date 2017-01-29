@@ -9,7 +9,6 @@ var MACentralIcs = React.createClass({
 
   getInitialState: function () {
     return {
-      eIndex: "meeting",
       numDisplay: -1
     };
   },
