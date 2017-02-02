@@ -1,6 +1,7 @@
 var React = require('react');
 var MAIcsForm = require('./icsform');
 var MACentralIcs = require('./central-ics');
+var MAUserStat = require('./userstat');
 
 var MAMain = React.createClass({
 
@@ -45,7 +46,7 @@ var MAMain = React.createClass({
         <div>
           <ul>
             <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateCentralPanel={this.updateCentralPanel} updateTopMessage={this.props.updateTopMessage} docURL={this.props.docURL}/></li>
-            <li>Icon2</li>
+            <li><MAUserStat /></li>
             <li>Icon3</li>
           </ul>
           {centralDisplay}
