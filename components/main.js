@@ -6,21 +6,16 @@ var MAUserStat = require('./userstat');
 var MAMain = React.createClass({
 
   propTypes: {
-    docURL: React.PropTypes.string.isRequired,
-    connectId: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
+    meetingList: React.PropTypes.array.isRequired,
+    updateMeetingList: React.PropTypes.func.isRequired,
+    sendMeetingInfo: React.PropTypes.func.isRequired,
     updateTopMessage: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
     return {
-      meetingList: [],
       centralPanel: -1,
     };
-  },
-
-  updateMeetingList: function (array) {
-    this.setState({meetingList: array});
   },
 
   updateCentralPanel: function (val) {
@@ -32,11 +27,11 @@ var MAMain = React.createClass({
     const centralPanel = this.state.centralPanel;
     let centralDisplay = null;
     if (centralPanel == 0) {
-      centralDisplay = (<MACentralIcs meetingList={this.state.meetingList} connectId={this.props.connectId}/>);
+      centralDisplay = (<MACentralIcs meetingList={this.props.meetingList} sendMeetingInfo={this.props.sendMeetingInfo}/>);
     } else {
+      //Change to put icons
       centralDisplay = (
         <div>
-          <h2>Welcome to {this.props.title}</h2>
           <p>Select one function</p>
         </div>
       );
@@ -45,7 +40,7 @@ var MAMain = React.createClass({
     return (
         <div>
           <ul>
-            <li><MAIcsForm updateMeetingList={this.updateMeetingList} updateCentralPanel={this.updateCentralPanel} updateTopMessage={this.props.updateTopMessage} docURL={this.props.docURL}/></li>
+            <li><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></li>
             <li><MAUserStat /></li>
             <li>Icon3</li>
           </ul>

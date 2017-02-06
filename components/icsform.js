@@ -1,48 +1,16 @@
 var React = require('react');
-var fetch = require('node-fetch');
 
 var MAIcsForm = React.createClass({
 
   propTypes: {
     updateMeetingList: React.PropTypes.func.isRequired,
     updateCentralPanel: React.PropTypes.func.isRequired,
-    updateTopMessage: React.PropTypes.func.isRequired,
-    docURL: React.PropTypes.string.isRequired
   },
 
   selectIcs: function(event) {
     event.preventDefault();
-    var file = event.target.files[0];
-
-    if (file.size > 0 && file.type.match('text/*')) {
-      var self = this;
-      var reader = new FileReader();
-      var meetingList = [];
-      reader.onload = function (upload) {
-        var dataURL = upload.target.result;
-        try {
-          var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0];
-          if (mimeType.search("VCALENDAR") != -1) {
-            fetch(self.props.docURL + 'api/ics', {
-              method: 'POST',
-              headers: {'Content-Type': 'text/plain'},
-              body: dataURL})
-               .then(function (res) {
-                 return res.json().then(function (json) {
-                   self.props.updateCentralPanel(0);
-                   self.props.updateMeetingList(json);
-                 })
-               });
-          }
-        }
-        catch (err) {
-           self.props.updateTopMessage(file.name + " does not meet iCalendar format");
-        }
-      };
-      reader.readAsText(file);
-    } else {
-      this.props.updateTopMessage(file.name + " does not meet iCalendar format");
-    }
+    this.props.updateMeetingList(event.target.files[0]);
+    this.props.updateCentralPanel(0);
   },
 
   submitIcs: function(event) {
@@ -50,9 +18,8 @@ var MAIcsForm = React.createClass({
   },
 
   transferClick: function(event) {
-    this.props.updateMeetingList([]);
+    this.props.updateMeetingList(null);
     this.props.updateCentralPanel(-1);
-    this.props.updateTopMessage("");
     this.refs.fileRef.click();
   },
 

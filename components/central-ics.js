@@ -3,7 +3,7 @@ var React = require('react');
 var MACentralIcs = React.createClass({
 
   propTypes: {
-    connectId: React.PropTypes.string.isRequired,
+    sendMeetingInfo: React.PropTypes.func.isRequired,
     meetingList: React.PropTypes.array.isRequired
   },
 
@@ -18,9 +18,7 @@ var MACentralIcs = React.createClass({
   },
 
   handleChoice: function (event) {
-    //var idx = parseInt(event.target.name);
-    //alert("Name= " + event.target.name + " Value= " + event.target.value);
-    //TODO
+    // sendMeetingInfo...
   },
 
   displayChoice: function (idx) {

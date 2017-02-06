@@ -4,7 +4,7 @@ var elasticsearch = require('elasticsearch');
 
 // Import components
 var MAHeader = require('./header');
-var MAMain = require('./main');
+var MAMainCont = require('./maincontainer');
 var MAFooter = require('./footer');
 
 var MainPage = React.createClass({
@@ -115,7 +115,7 @@ var MainPage = React.createClass({
       let main = null;
       if ( this.state.eValidate ) {
         var connectId = this.state.eHost + ':' + this.state.ePort;
-        main = (<MAMain updateTopMessage={this.updateTopMessage} docURL={this.props.docURL} connectId={connectId} title={this.state.title}/>);
+        main = (<MAMainCont updateTopMessage={this.updateTopMessage} docURL={this.props.docURL} connectId={connectId}/>);
       } else {
         main = (
           <div>
