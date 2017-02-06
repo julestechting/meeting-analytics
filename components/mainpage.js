@@ -18,8 +18,7 @@ var MainPage = React.createClass({
         eHost: "",
         ePort: 0,
         eValidate: false,
-        title: "Meeting Analytics",
-        topMessage: ""
+        title: "Meeting Analytics"
       };
     },
 
@@ -107,15 +106,11 @@ var MainPage = React.createClass({
       event.preventDefault();
     },
 
-    updateTopMessage (text) {
-      this.setState({topMessage: text});
-    },
-
     render: function () {
       let main = null;
       if ( this.state.eValidate ) {
         var connectId = this.state.eHost + ':' + this.state.ePort;
-        main = (<MAMainCont updateTopMessage={this.updateTopMessage} docURL={this.props.docURL} connectId={connectId}/>);
+        main = (<MAMainCont docURL={this.props.docURL} connectId={connectId}/>);
       } else {
         main = (
           <div>
@@ -135,7 +130,7 @@ var MainPage = React.createClass({
 
       return (
         <div>
-          <MAHeader topMessage={this.state.topMessage} title={this.state.title}/>
+          <MAHeader title={this.state.title}/>
           {main}
           <MAFooter/>
         </div>

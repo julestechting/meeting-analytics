@@ -9,7 +9,6 @@ var MAMain = React.createClass({
     meetingList: React.PropTypes.array.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
     sendMeetingInfo: React.PropTypes.func.isRequired,
-    updateTopMessage: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {

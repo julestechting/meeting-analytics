@@ -7,7 +7,6 @@ var MAMainCont = React.createClass({
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
-    updateTopMessage: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -39,12 +38,12 @@ var MAMainCont = React.createClass({
             }
           }
           catch (err) {
-             self.props.updateTopMessage(file.name + " does not meet iCalendar format");
+             // Send alert message (file.name + " does not meet iCalendar format")
           }
         };
         reader.readAsText(file);
       } else {
-        this.props.updateTopMessage(file.name + " does not meet iCalendar format");
+        // Send alert message (file.name + " does not meet iCalendar format")
       }
     } else {
       this.setState({meetingList: []});
@@ -61,8 +60,7 @@ var MAMainCont = React.createClass({
         <MAMain
           meetingList={this.state.meetingList}
           updateMeetingList={this.updateMeetingList}
-          sendMeetingInfo={this.sendMeetingInfo}
-          updateTopMessage={this.props.updateTopMessage} />
+          sendMeetingInfo={this.sendMeetingInfo} />
     );
   }
 });
