@@ -1,6 +1,8 @@
 var React = require('react');
 var fetch = require('node-fetch');
-var MAMain = require('./main')
+var elasticsearch = require('elasticsearch');
+
+var MAMain = require('./main');
 
 var MAMainCont = React.createClass({
 
@@ -52,6 +54,7 @@ var MAMainCont = React.createClass({
 
   sendMeetingInfo: function (json) {
     //Send data to Elastic
+    //var client = new elasticsearch.Client({host: connectId, log: 'error'});
   },
 
   render: function () {

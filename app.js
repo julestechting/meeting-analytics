@@ -1,8 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom')
-var MainPage = require('./components/mainpage');
+var MainPageCont = require('./components/mainpagecontainer');
 
 ReactDOM.render(
-  React.createElement(MainPage, {docURL: document.URL}),
+  React.createElement(MainPageCont, {docURL: document.URL}),
   document.getElementById('ma-app')
 );
