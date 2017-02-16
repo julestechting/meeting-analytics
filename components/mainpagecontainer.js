@@ -28,7 +28,7 @@ var MainPageCont = React.createClass({
         client.indices.exists({index: ind})
           .then(function (res) {
             if ( !res ) {
-              client.indices.create({index: ind}, null);
+              client.indices.create({index: ind});
             }
           })
       });
@@ -104,7 +104,7 @@ var MainPageCont = React.createClass({
       var connectId = this.state.eHost + ':' + this.state.ePort;
 
       return (
-        <MainPage connectId={connectId} docURL={this.props.docURL} eValidate={this.state.eValidate} updateEClient={this.updateEClient} />
+        <MainPage connectId={connectId} docURL={this.props.docURL} meetingIndex={this.state.eIndices[0]} eValidate={this.state.eValidate} updateEClient={this.updateEClient} />
       );
     }
 });

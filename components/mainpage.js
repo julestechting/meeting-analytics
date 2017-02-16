@@ -11,6 +11,7 @@ var MainPage = React.createClass({
       docURL: React.PropTypes.string.isRequired,
       connectId: React.PropTypes.string.isRequired,
       eValidate: React.PropTypes.bool.isRequired,
+      meetingIndex: React.PropTypes.string.isRequired,
       updateEClient: React.PropTypes.func.isRequired
     },
 
@@ -41,7 +42,7 @@ var MainPage = React.createClass({
     render: function () {
       let main = null;
       if ( this.props.eValidate ) {
-        main = (<MAMainCont docURL={this.props.docURL} connectId={this.props.connectId}/>);
+        main = (<MAMainCont docURL={this.props.docURL} connectId={this.props.connectId} meetingIndex={this.props.meetingIndex}/>);
       } else {
         main = (
           <div>

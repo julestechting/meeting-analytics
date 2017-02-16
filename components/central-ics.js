@@ -18,16 +18,19 @@ var MACentralIcs = React.createClass({
   },
 
   handleChoice: function (event) {
-    // sendMeetingInfo...
+    var attendStatus = event.target.value;
+    var indices = event.target.name.split("-");
+    this.propos.sendMeetingInfo(this.props.meetingList[indices[0]], indices[1], attendStatus);
   },
 
-  displayChoice: function (idx) {
+  displayChoice: function (idx, numDisplayStr) {
     var idxStr = idx.toString();
+    var name = numDisplayStr + "-" + idxStr;
     return (
       <form>
-        <label key={idxStr + "0"}>Attend&On-Time<input type="radio" name={idx} value="0" onChange={this.handleChoice}/></label>
-        <label key={idxStr + "1"}>Attend&Late<input type="radio" name={idx} value="1" onChange={this.handleChoice}/></label>
-        <label key={idxStr + "2"}>No Attend<input type="radio" name={idx} value="2" onChange={this.handleChoice}/></label>
+        <label key={idxStr + "0"}>Attend&On-Time<input type="radio" name={name} value="AOT" onChange={this.handleChoice}/></label>
+        <label key={idxStr + "1"}>Attend&Late<input type="radio" name={name} value="AL" onChange={this.handleChoice}/></label>
+        <label key={idxStr + "2"}>No Attend<input type="radio" name={name} value="NA" onChange={this.handleChoice}/></label>
       </form>
     );
   },
@@ -48,7 +51,7 @@ var MACentralIcs = React.createClass({
             return (
               <li key={key}>
                 {attendee.role == "OPT-PARTICIPANT" && <i>(Optional)</i>} Attendee: {attendee.name} ({attendee.mail})
-                {self.displayChoice(idx)}
+                {self.displayChoice(idx, self.state.numDisplay.toString())}
               </li>);
           })}
         </ul>

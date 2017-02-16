@@ -9,6 +9,7 @@ var MAMainCont = React.createClass({
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
+    meetingIndex: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function () {
@@ -52,7 +53,7 @@ var MAMainCont = React.createClass({
     }
   },
 
-  sendMeetingInfo: function (json) {
+  sendMeetingInfo: function (meeting, attendeeIdx, attendStatus) {
     //Send data to Elastic
     //var client = new elasticsearch.Client({host: connectId, log: 'error'});
   },
