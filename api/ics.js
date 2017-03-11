@@ -26,8 +26,12 @@ exports.icsParse = function (icsData) {
         if ( state == "VEVENT" ) {
           switch (tag) {
             case "DTSTART;VALUE=DATE":
-            case "DTSTART":case "DTSTART":
-              meeting.date = makeDate(tz,val);
+            case "DTSTART":
+              meeting.dateStart = makeDate(tz,val);
+              break;
+            case "DTEND;VALUE=DATE":
+            case "DTEND":
+              meeting.dateEnd = makeDate(tz,val);
               break;
             case "SUMMARY":
               meeting.summary = val;
@@ -86,7 +90,8 @@ exports.icsParse = function (icsData) {
         case "BEGIN:VEVENT":
           state = "VEVENT";
           meeting = {
-            date: null,
+            dateStart: null,
+            dateEnd: null,
             organizer: null,
             attendees: [],
             summary: "",

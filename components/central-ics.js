@@ -44,7 +44,7 @@ var MACentralIcs = React.createClass({
         <ul>
           <li key={prefix+"0"}>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
           <li key={prefix+"1"}>Subject: {meeting.summary}</li>
-          <li key={prefix+"2"}>Date: {this.getLocalDate(meeting.date)}</li>
+          <li key={prefix+"2"}>Date: {this.getLocalDate(meeting.dateStart)}</li>
           <li key={prefix+"3"}>Location: {meeting.location}</li>
           {meeting.attendees.map(function (attendee, idx) {
             var key = prefix + new String(4 + idx);
