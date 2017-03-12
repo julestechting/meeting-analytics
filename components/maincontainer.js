@@ -9,7 +9,7 @@ var MAMainCont = React.createClass({
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
-    meetingIndex: React.PropTypes.string.isRequired,
+    indices: React.PropTypes.object.isRequired
   },
 
   getInitialState: function () {

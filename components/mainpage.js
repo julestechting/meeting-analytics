@@ -11,13 +11,15 @@ var MainPage = React.createClass({
       docURL: React.PropTypes.string.isRequired,
       connectId: React.PropTypes.string.isRequired,
       eValidate: React.PropTypes.bool.isRequired,
-      meetingIndex: React.PropTypes.string.isRequired,
+      indices: React.PropTypes.object.isRequired,
       updateEClient: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
       return {
-        title: "Meeting Analytics"
+        title: "Meeting Analytics",
+        openParam: false,
+        defaultUser: "guest"
       };
     },
 
@@ -33,16 +35,33 @@ var MainPage = React.createClass({
     },
 
     handleESubmit: function (event) {
-      // The required attribute in the form ensured states have been updated
+      // The 'required' attribute in the form ensured states have been updated
       // No need to check again
       this.props.updateEClient(true, null, null);
       event.preventDefault();
     },
 
+    updateOpenParam: function (value) {
+      this.setState({openParam: value});
+    },
+
+    displayParam: function () {
+      //fetch data
+      return (
+        <div>Open!</div>
+      );
+    },
+
     render: function () {
       let main = null;
       if ( this.props.eValidate ) {
-        main = (<MAMainCont docURL={this.props.docURL} connectId={this.props.connectId} meetingIndex={this.props.meetingIndex}/>);
+        main = (
+          <MAMainCont
+            docURL={this.props.docURL}
+            connectId={this.props.connectId}
+            indices={this.props.indices}
+          />
+        );
       } else {
         main = (
           <div>
@@ -62,7 +81,8 @@ var MainPage = React.createClass({
 
       return (
         <div>
-          <MAHeader title={this.state.title}/>
+          <MAHeader title={this.state.title} updateOpenParam={this.updateOpenParam}/>
+          {this.state.openParam && this.displayParam()}
           {main}
           <MAFooter/>
         </div>
