@@ -19,6 +19,7 @@ var MainPageCont = React.createClass({
         eIndices: [
           {
             index: "meetings",
+            type: "meeting",
             body: {
               "aliases": {
                 "meetings": {}
@@ -27,6 +28,7 @@ var MainPageCont = React.createClass({
           },
           {
             index: "attendances",
+            type: "attendance",
             body: {
               "aliases": {
                 "attendances": {}
@@ -35,6 +37,7 @@ var MainPageCont = React.createClass({
           },
           {
             index: "params",
+            type: "param",
             body: {
               "mappings": {
                 "param": {
@@ -43,6 +46,10 @@ var MainPageCont = React.createClass({
                       "type": "integer"
                     },
                     "defaultDurationUnit": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "owner": {
                       "type": "string",
                       "index": "not_analyzed"
                     }
@@ -62,17 +69,59 @@ var MainPageCont = React.createClass({
       var self = this;
       var connectId = self.state.eHost + ':' + self.state.ePort;
       var client = new elasticsearch.Client({host: connectId, log: 'error'});
+      // Default parameters
+      var defaultParam = {
+          defaultDuration: 1,
+          defaultDurationUnit: 'y',
+          owner: 'default'
+      };
+      // For each index, create it if it doesn't exist already
       this.state.eIndices.map(function (eIndex) {
-        // Create an index only if it doesn't exist already
-        client.indices.exists({index: eIndex.index})
-          .then(function (res) {
+        if ( eIndex.index == "params" ) {
+          var createDefaultParam = function () {
+            client.index ({
+              index: eIndex.index,
+              type: eIndex.type,
+              body: defaultParam
+            });
+          };
+
+          client.indices.exists({index: eIndex.index}, function (err, res, status) {
             if ( !res ) {
-              // Generate a random string to use as index name
-              // Used index name will be an alias
+              // ISSUE! INDICES CREATED EVEN IF ALREADY EXIST!
+              // Generate a random string to use as index name - Used index name will be an alias
+              var randomIndex = Math.random().toString(36).slice(5);
+              client.indices.create({index: randomIndex, body: eIndex.body}, function (err, res, status) {
+                if ( !err ) {
+                  createDefaultParam();
+                }
+              });
+            } else {
+              client.search ({
+                index: eIndex.index,
+                body: {
+                  query: {
+                    match: {
+                      owner: 'default'
+                    }
+                  }
+                }
+              }, function (err, res, status) {
+                if ( !err && res.hits.total == 0 ) {
+                  createDefaultParam();
+                }
+              });
+            }
+          });
+        } else {
+          client.indices.exists({index: eIndex.index}, function (err, res, status) {
+            if ( !res ) {
+              // Generate a random string to use as index name - Used index name will be an alias
               var randomIndex = Math.random().toString(36).slice(5);
               client.indices.create({index: randomIndex, body: eIndex.body});
             }
-          })
+          });
+        }
       });
     },
 
@@ -101,8 +150,8 @@ var MainPageCont = React.createClass({
       var self = this;
       var connectId = this.state.eHost + ':' + this.state.ePort;
       var client = new elasticsearch.Client({host: connectId, log: 'error'});
-      client.ping ({requestTimeout: 3000}, function (error) {
-        if ( error ) {
+      client.ping ({requestTimeout: 3000}, function (err, res, status) {
+        if ( err ) {
           self.setState({eValidate: false});
         } else {
           self.checkAndInitIndices();
@@ -146,8 +195,11 @@ var MainPageCont = React.createClass({
       var connectId = this.state.eHost + ':' + this.state.ePort;
       var indices = {
           meeting: this.state.eIndices[0].index,
+          meetingType: this.state.eIndices[0].type,
           attendance: this.state.eIndices[1].index,
-          param: this.state.eIndices[2].index
+          attendanceType: this.state.eIndices[1].type,
+          param: this.state.eIndices[2].index,
+          paramType: this.state.eIndices[2].type
         };
 
       return (
