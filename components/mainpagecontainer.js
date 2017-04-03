@@ -16,6 +16,7 @@ var MainPageCont = React.createClass({
         eHost: "",
         ePort: 0,
         eValidate: false,
+        hideFooter: false,
         eIndices: [
           {
             index: "meetings",
@@ -52,6 +53,9 @@ var MainPageCont = React.createClass({
                     "owner": {
                       "type": "string",
                       "index": "not_analyzed"
+                    },
+                    "hideFooter": {
+                      "type": "boolean"
                     }
                   }
                 }
@@ -73,7 +77,8 @@ var MainPageCont = React.createClass({
       var defaultParam = {
           defaultDuration: 1,
           defaultDurationUnit: 'y',
-          owner: 'default'
+          owner: 'default',
+          hideFooter: false
       };
       // For each index, create it if it doesn't exist already
       this.state.eIndices.map(function (eIndex) {
@@ -107,8 +112,14 @@ var MainPageCont = React.createClass({
                   }
                 }
               }, function (err, res, status) {
-                if ( !err && res.hits.total == 0 ) {
-                  createDefaultParam();
+                if ( !err ) {
+                  if ( res.hits.total == 0 ) {
+                    createDefaultParam();
+                  } else {
+                    // Retrieve value of hideFooter
+                    var hideFooter = res.hits.hits[0]._source.hideFooter;
+                    self.setState({hideFooter: hideFooter});
+                  }
                 }
               });
             }
@@ -207,6 +218,7 @@ var MainPageCont = React.createClass({
           connectId={connectId}
           docURL={this.props.docURL}
           indices={indices}
+          hideFooter={this.state.hideFooter}
           eValidate={this.state.eValidate}
           updateEClient={this.updateEClient}
         />

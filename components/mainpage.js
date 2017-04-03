@@ -11,6 +11,7 @@ var MainPage = React.createClass({
       docURL: React.PropTypes.string.isRequired,
       connectId: React.PropTypes.string.isRequired,
       eValidate: React.PropTypes.bool.isRequired,
+      hideFooter: React.PropTypes.bool.isRequired,
       indices: React.PropTypes.object.isRequired,
       updateEClient: React.PropTypes.func.isRequired
     },
@@ -19,7 +20,7 @@ var MainPage = React.createClass({
       return {
         title: "Meeting Analytics",
         openParam: false,
-        defaultUser: "guest"
+        defaultUser: "default"
       };
     },
 
@@ -84,7 +85,7 @@ var MainPage = React.createClass({
           <MAHeader title={this.state.title} updateOpenParam={this.updateOpenParam}/>
           {this.state.openParam && this.displayParam()}
           {main}
-          <MAFooter/>
+          {!this.props.hideFooter && <MAFooter/>}
         </div>
       );
     }
