@@ -20,7 +20,7 @@ var MACentralIcs = React.createClass({
   handleChoice: function (event) {
     var attendStatus = event.target.value;
     var indices = event.target.name.split("-");
-    this.propos.sendMeetingInfo(this.props.meetingList[indices[0]], indices[1], attendStatus);
+    this.props.sendMeetingInfo(this.props.meetingList[indices[0]], indices[1], attendStatus);
   },
 
   displayChoice: function (idx, numDisplayStr) {
@@ -31,6 +31,7 @@ var MACentralIcs = React.createClass({
         <label key={idxStr + "0"}>Attend&On-Time<input type="radio" name={name} value="AOT" onChange={this.handleChoice}/></label>
         <label key={idxStr + "1"}>Attend&Late<input type="radio" name={name} value="AL" onChange={this.handleChoice}/></label>
         <label key={idxStr + "2"}>No Attend<input type="radio" name={name} value="NA" onChange={this.handleChoice}/></label>
+        <label key={idxStr + "3"}>No Attend&Delegated<input type="radio" name={name} value="NAD" onChange={this.handleChoice}/></label>
       </form>
     );
   },
