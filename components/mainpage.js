@@ -54,6 +54,9 @@ var MainPage = React.createClass({
     },
 
     render: function () {
+      // Define record owner
+      // In the future when Authentication feature will be implemented, this will be replaced by a function
+      var owner = this.state.defaultUser;
       let main = null;
       if ( this.props.eValidate ) {
         main = (
@@ -61,6 +64,7 @@ var MainPage = React.createClass({
             docURL={this.props.docURL}
             connectId={this.props.connectId}
             indices={this.props.indices}
+            owner={owner}
           />
         );
       } else {

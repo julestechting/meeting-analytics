@@ -35,33 +35,33 @@ var MainPageCont = React.createClass({
                 "attendance": {
                   "properties": {
                     "owner": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "attendeeName": {
-                      "type": "string"
+                      "type": "text"
                     },
                     "attendeeMail": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "role": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "status": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "organizerName": {
-                      "type": "string"
+                      "type": "text"
                     },
                     "organizerMail": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "subject": {
-                      "type": "string"
+                      "type": "text",
+                      "fields": {
+                        "raw": {
+                          "type": "keyword"
+                        }
+                      }
                     },
                     "start": {
                       "type": "date"
@@ -85,12 +85,10 @@ var MainPageCont = React.createClass({
                       "type": "integer"
                     },
                     "defaultDurationUnit": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "owner": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                      "type": "keyword"
                     },
                     "hideFooter": {
                       "type": "boolean"
