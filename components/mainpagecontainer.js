@@ -31,6 +31,44 @@ var MainPageCont = React.createClass({
             index: "attendances",
             type: "attendance",
             body: {
+              "mappings": {
+                "attendance": {
+                  "properties": {
+                    "owner": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "attendeeName": {
+                      "type": "string"
+                    },
+                    "attendeeMail": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "role": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "status": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "organizerName": {
+                      "type": "string"
+                    },
+                    "organizerMail": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    },
+                    "subject": {
+                      "type": "string"
+                    },
+                    "start": {
+                      "type": "date"
+                    }
+                  }
+                }
+              },
               "aliases": {
                 "attendances": {}
               }
