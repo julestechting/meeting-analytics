@@ -9,7 +9,8 @@ var MAMainCont = React.createClass({
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
-    indices: React.PropTypes.object.isRequired
+    indices: React.PropTypes.object.isRequired,
+    owner: React.PropTypes.object.isRequired
   },
 
   getInitialState: function () {
@@ -54,8 +55,65 @@ var MAMainCont = React.createClass({
   },
 
   sendMeetingInfo: function (meeting, attendeeIdx, attendStatus) {
-    //Send data to Elastic
-    //var client = new elasticsearch.Client({host: connectId, log: 'error'});
+    var self = this;
+    // Connect to elasticsearch
+    var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
+
+    // Search if record already exists
+    // A record should be unique by its five fields: owner, subject.raw, organizerMail, attendeeMail and start
+    client.search ({
+      index: self.props.indices.attendance,
+      body: {
+        query: {
+          bool: {
+            must: [
+              {match: {owner: self.props.owner}},
+              {match: {"subject.raw": meeting.summary}},
+              {match: {organizerMail: meeting.organizer.mail}},
+              {match: {attendeeMail: meeting.attendees[attendeeIdx].mail}},
+              {match: {start: meeting.dateStart}}
+            ]
+          }
+        }
+      }},
+      function (err, res, status) {
+        if ( !err ) {
+          if ( res.hits.total == 0 ) {
+            // New record to create
+            client.index ({
+              index: self.props.indices.attendance,
+              type: self.props.indices.attendanceType,
+              body: {
+                owner: self.props.owner,
+                attendeeName: meeting.attendees[attendeeIdx].name,
+                attendeeMail: meeting.attendees[attendeeIdx].mail,
+                role: meeting.attendees[attendeeIdx].role,
+                status: attendStatus,
+                organizerName: meeting.organizer.cn,
+                organizerMail: meeting.organizer.mail,
+                subject: meeting.summary,
+                start: meeting.dateStart
+              }
+            });
+          } else if ( res.hits.total == 1 ) {
+            // Update attendStatus for this record
+            client.update({
+              index: self.props.indices.attendance,
+              type: self.props.indices.attendanceType,
+              id: res.hits.hits[0]._id,
+              body: {
+                doc: {
+                  status: attendStatus
+                }
+              }
+            });
+          } else {
+            // OH OH! There shouldn't be more than 1 records!
+            alert("ERROR");
+          }
+        }
+      }
+    );
   },
 
   render: function () {
