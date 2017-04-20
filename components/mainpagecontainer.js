@@ -4,6 +4,7 @@ var elasticsearch = require('elasticsearch');
 
 // Import components
 var MainPage = require('./mainpage');
+var eDefs = require('./edefinitions');
 
 var MainPageCont = React.createClass({
 
@@ -17,65 +18,6 @@ var MainPageCont = React.createClass({
         ePort: 0,
         eValidate: false,
         hideFooter: false,
-        eIndices: [
-          {
-            index: "meetings",
-            type: "meeting",
-            body: {
-              "aliases": {
-                "meetings": {}
-              }
-            }
-          },
-          {
-            index: "attendances",
-            type: "attendance",
-            body: {
-              "mappings": {
-                "attendance": {
-                  "properties": {
-                    "owner": { "type": "keyword" },
-                    "attendeeName": { "type": "text" },
-                    "attendeeMail": { "type": "keyword" },
-                    "role": { "type": "keyword" },
-                    "status": { "type": "keyword" },
-                    "organizerName": { "type": "text" },
-                    "organizerMail": { "type": "keyword" },
-                    "subject": {
-                      "type": "text",
-                      "fields": {
-                        "raw": { "type": "keyword" }
-                      }
-                    },
-                    "start": { "type": "date" }
-                  }
-                }
-              },
-              "aliases": {
-                "attendances": {}
-              }
-            }
-          },
-          {
-            index: "params",
-            type: "param",
-            body: {
-              "mappings": {
-                "param": {
-                  "properties": {
-                    "defaultDuration": { "type": "integer" },
-                    "defaultDurationUnit": { "type": "keyword" },
-                    "owner": { "type": "keyword" },
-                    "hideFooter": { "type": "boolean" }
-                  }
-                }
-              },
-              "aliases": {
-                "params": {}
-              }
-            }
-          }
-        ]
       };
     },
 
@@ -84,20 +26,16 @@ var MainPageCont = React.createClass({
       var connectId = self.state.eHost + ':' + self.state.ePort;
       var client = new elasticsearch.Client({host: connectId, log: 'error'});
       // Default parameters
-      var defaultParam = {
-          defaultDuration: 1,
-          defaultDurationUnit: 'y',
-          owner: 'default',
-          hideFooter: false
-      };
+      var defaultParams = eDefs.eDefaultParams;
+
       // For each index, create it if it doesn't exist already
-      this.state.eIndices.map(function (eIndex) {
+      eDefs.eIndices.map(function (eIndex) {
         if ( eIndex.index == "params" ) {
-          var createDefaultParam = function () {
+          var createdefaultParams = function () {
             client.index ({
               index: eIndex.index,
               type: eIndex.type,
-              body: defaultParam
+              body: defaultParams
             });
           };
 
@@ -108,7 +46,7 @@ var MainPageCont = React.createClass({
               var randomIndex = Math.random().toString(36).slice(5);
               client.indices.create({index: randomIndex, body: eIndex.body}, function (err, res, status) {
                 if ( !err ) {
-                  createDefaultParam();
+                  createdefaultParams();
                 }
               });
             } else {
@@ -124,7 +62,7 @@ var MainPageCont = React.createClass({
               }, function (err, res, status) {
                 if ( !err ) {
                   if ( res.hits.total == 0 ) {
-                    createDefaultParam();
+                    createdefaultParams();
                   } else {
                     // Retrieve value of hideFooter
                     var hideFooter = res.hits.hits[0]._source.hideFooter;
@@ -212,22 +150,15 @@ var MainPageCont = React.createClass({
       }
     },
 
+    //getCurrentParams: function (owner)
+
     render: function () {
       var connectId = this.state.eHost + ':' + this.state.ePort;
-      var indices = {
-          meeting: this.state.eIndices[0].index,
-          meetingType: this.state.eIndices[0].type,
-          attendance: this.state.eIndices[1].index,
-          attendanceType: this.state.eIndices[1].type,
-          param: this.state.eIndices[2].index,
-          paramType: this.state.eIndices[2].type
-        };
 
       return (
         <MainPage
           connectId={connectId}
           docURL={this.props.docURL}
-          indices={indices}
           hideFooter={this.state.hideFooter}
           eValidate={this.state.eValidate}
           updateEClient={this.updateEClient}

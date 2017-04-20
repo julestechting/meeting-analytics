@@ -2,14 +2,15 @@ var React = require('react');
 var fetch = require('node-fetch');
 var elasticsearch = require('elasticsearch');
 
+// Import components
 var MAMain = require('./main');
+var eDefs = require('./edefinitions');
 
 var MAMainCont = React.createClass({
 
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
-    indices: React.PropTypes.object.isRequired,
     owner: React.PropTypes.object.isRequired
   },
 
@@ -55,19 +56,21 @@ var MAMainCont = React.createClass({
   },
 
   sendMeetingInfo: function (meeting, attendeeIdx, attendStatus) {
-    var self = this;
+    var owner = this.props.owner;
+    var indices = eDefs.eLIndices;
+
     // Connect to elasticsearch
     var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
 
     // Search if record already exists
     // A record should be unique by its five fields: owner, subject.raw, organizerMail, attendeeMail and start
     client.search ({
-      index: self.props.indices.attendance,
+      index: indices.attendance,
       body: {
         query: {
           bool: {
             must: [
-              {match: {owner: self.props.owner}},
+              {match: {owner: owner}},
               {match: {"subject.raw": meeting.summary}},
               {match: {organizerMail: meeting.organizer.mail}},
               {match: {attendeeMail: meeting.attendees[attendeeIdx].mail}},
@@ -81,10 +84,10 @@ var MAMainCont = React.createClass({
           if ( res.hits.total == 0 ) {
             // New record to create
             client.index ({
-              index: self.props.indices.attendance,
-              type: self.props.indices.attendanceType,
+              index: indices.attendance,
+              type: indices.attendanceType,
               body: {
-                owner: self.props.owner,
+                owner: owner,
                 attendeeName: meeting.attendees[attendeeIdx].name,
                 attendeeMail: meeting.attendees[attendeeIdx].mail,
                 role: meeting.attendees[attendeeIdx].role,
@@ -98,8 +101,8 @@ var MAMainCont = React.createClass({
           } else if ( res.hits.total == 1 ) {
             // Update attendStatus for this record
             client.update({
-              index: self.props.indices.attendance,
-              type: self.props.indices.attendanceType,
+              index: indices.attendance,
+              type: indices.attendanceType,
               id: res.hits.hits[0]._id,
               body: {
                 doc: {

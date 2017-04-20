@@ -12,14 +12,13 @@ var MainPage = React.createClass({
       connectId: React.PropTypes.string.isRequired,
       eValidate: React.PropTypes.bool.isRequired,
       hideFooter: React.PropTypes.bool.isRequired,
-      indices: React.PropTypes.object.isRequired,
       updateEClient: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
       return {
         title: "Meeting Analytics",
-        openParam: false,
+        params: null,
         defaultUser: "default"
       };
     },
@@ -63,7 +62,6 @@ var MainPage = React.createClass({
           <MAMainCont
             docURL={this.props.docURL}
             connectId={this.props.connectId}
-            indices={this.props.indices}
             owner={owner}
           />
         );
