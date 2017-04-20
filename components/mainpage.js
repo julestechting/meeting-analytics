@@ -18,7 +18,7 @@ var MainPage = React.createClass({
     getInitialState: function () {
       return {
         title: "Meeting Analytics",
-        params: null,
+        openParam: false,
         defaultUser: "default"
       };
     },
