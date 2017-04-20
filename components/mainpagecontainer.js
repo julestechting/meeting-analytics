@@ -34,38 +34,20 @@ var MainPageCont = React.createClass({
               "mappings": {
                 "attendance": {
                   "properties": {
-                    "owner": {
-                      "type": "keyword"
-                    },
-                    "attendeeName": {
-                      "type": "text"
-                    },
-                    "attendeeMail": {
-                      "type": "keyword"
-                    },
-                    "role": {
-                      "type": "keyword"
-                    },
-                    "status": {
-                      "type": "keyword"
-                    },
-                    "organizerName": {
-                      "type": "text"
-                    },
-                    "organizerMail": {
-                      "type": "keyword"
-                    },
+                    "owner": { "type": "keyword" },
+                    "attendeeName": { "type": "text" },
+                    "attendeeMail": { "type": "keyword" },
+                    "role": { "type": "keyword" },
+                    "status": { "type": "keyword" },
+                    "organizerName": { "type": "text" },
+                    "organizerMail": { "type": "keyword" },
                     "subject": {
                       "type": "text",
                       "fields": {
-                        "raw": {
-                          "type": "keyword"
-                        }
+                        "raw": { "type": "keyword" }
                       }
                     },
-                    "start": {
-                      "type": "date"
-                    }
+                    "start": { "type": "date" }
                   }
                 }
               },
@@ -81,18 +63,10 @@ var MainPageCont = React.createClass({
               "mappings": {
                 "param": {
                   "properties": {
-                    "defaultDuration": {
-                      "type": "integer"
-                    },
-                    "defaultDurationUnit": {
-                      "type": "keyword"
-                    },
-                    "owner": {
-                      "type": "keyword"
-                    },
-                    "hideFooter": {
-                      "type": "boolean"
-                    }
+                    "defaultDuration": { "type": "integer" },
+                    "defaultDurationUnit": { "type": "keyword" },
+                    "owner": { "type": "keyword" },
+                    "hideFooter": { "type": "boolean" }
                   }
                 }
               },
