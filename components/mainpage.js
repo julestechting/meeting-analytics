@@ -12,13 +12,14 @@ var MainPage = React.createClass({
       connectId: React.PropTypes.string.isRequired,
       eValidate: React.PropTypes.bool.isRequired,
       hideFooter: React.PropTypes.bool.isRequired,
-      updateEClient: React.PropTypes.func.isRequired
+      updateEClient: React.PropTypes.func.isRequired,
+      currentParams: React.PropTypes.object.isRequired,
+      loadCurrentParams: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
       return {
         title: "Meeting Analytics",
-        openParam: false,
         defaultUser: "default"
       };
     },
@@ -42,7 +43,7 @@ var MainPage = React.createClass({
     },
 
     updateOpenParam: function (value) {
-      this.setState({openParam: value});
+      this.props.loadCurrentParams(value, this.state.defaultUser);
     },
 
     displayParam: function () {
@@ -85,7 +86,7 @@ var MainPage = React.createClass({
       return (
         <div>
           <MAHeader title={this.state.title} updateOpenParam={this.updateOpenParam}/>
-          {this.state.openParam && this.displayParam()}
+          {this.props.currentParams && this.displayParam()}
           {main}
           {!this.props.hideFooter && <MAFooter/>}
         </div>

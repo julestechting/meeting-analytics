@@ -18,6 +18,7 @@ var MainPageCont = React.createClass({
         ePort: 0,
         eValidate: false,
         hideFooter: false,
+        currentParams: null
       };
     },
 
@@ -55,7 +56,7 @@ var MainPageCont = React.createClass({
                 body: {
                   query: {
                     match: {
-                      owner: 'default'
+                      owner: defaultParams.owner
                     }
                   }
                 }
@@ -150,7 +151,37 @@ var MainPageCont = React.createClass({
       }
     },
 
-    //getCurrentParams: function (owner)
+    loadCurrentParams: function (value, currentUser) {
+      // value is either true or false
+      if ( value ) {
+        //fetch params from engine
+        var self = this;
+        var connectId = this.state.eHost + ':' + this.state.ePort;
+        var client = new elasticsearch.Client({host: connectId, log: 'error'});
+        client.search ({
+          index: eDefs.eLIndices.param,
+          body: {
+            query: {
+              match: {
+                owner: currentUser
+              }
+            }
+          }
+        }, function (err, res, status) {
+          if ( ! err ) {
+            if ( res.hits.total == 1 ) {
+              self.setState({currentParams: res.hits.hits[0]._source});
+            } else {
+              // Oh oh! There shouldn't any other number of hits
+              // Reset to default
+              self.setState({currentParams: eDefs.eDefaultParams});
+            }
+          }
+        });
+      } else {
+        this.setState({currentParams: null});
+      }
+    },
 
     render: function () {
       var connectId = this.state.eHost + ':' + this.state.ePort;
@@ -162,6 +193,8 @@ var MainPageCont = React.createClass({
           hideFooter={this.state.hideFooter}
           eValidate={this.state.eValidate}
           updateEClient={this.updateEClient}
+          currentParams={this.state.currentParams}
+          loadCurrentParams={this.loadCurrentParams}
         />
       );
     }
