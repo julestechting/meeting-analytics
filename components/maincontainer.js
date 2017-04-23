@@ -72,8 +72,8 @@ var MAMainCont = React.createClass({
             must: [
               {match: {owner: owner}},
               {match: {"subject.raw": meeting.summary}},
-              {match: {organizerMail: meeting.organizer.mail}},
-              {match: {attendeeMail: meeting.attendees[attendeeIdx].mail}},
+              {match: {"organizerMail.raw": meeting.organizer.mail}},
+              {match: {"attendeeMail.raw": meeting.attendees[attendeeIdx].mail}},
               {match: {start: meeting.dateStart}}
             ]
           }

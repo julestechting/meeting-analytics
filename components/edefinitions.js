@@ -28,11 +28,21 @@ export const eIndices = [
           "properties": {
             "owner": { "type": "keyword" },
             "attendeeName": { "type": "text" },
-            "attendeeMail": { "type": "keyword" },
+            "attendeeMail": {
+              "type": "text",
+              "fields": {
+                "raw": { "type": "keyword" }
+              }
+            },
             "role": { "type": "keyword" },
             "status": { "type": "keyword" },
             "organizerName": { "type": "text" },
-            "organizerMail": { "type": "keyword" },
+            "organizerMail": {
+              "type": "text",
+              "fields": {
+                "raw": { "type": "keyword" }
+              }
+            },
             "subject": {
               "type": "text",
               "fields": {
