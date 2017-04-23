@@ -1,14 +1,17 @@
 var React = require('react');
+
+// Import components
 var MAIcsForm = require('./icsform');
 var MACentralIcs = require('./central-ics');
 var MAUserStat = require('./userstat');
+var MACentralStat = require('./central-stat');
 
 var MAMain = React.createClass({
 
   propTypes: {
     meetingList: React.PropTypes.array.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
-    sendMeetingInfo: React.PropTypes.func.isRequired,
+    sendMeetingInfo: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -25,8 +28,11 @@ var MAMain = React.createClass({
 
     const centralPanel = this.state.centralPanel;
     let centralDisplay = null;
+
     if (centralPanel == 0) {
       centralDisplay = (<MACentralIcs meetingList={this.props.meetingList} sendMeetingInfo={this.props.sendMeetingInfo}/>);
+    } else if (centralPanel == 1) {
+      centralDisplay = (<MACentralStat />);
     } else {
       //Change to put icons
       centralDisplay = (
@@ -40,7 +46,7 @@ var MAMain = React.createClass({
         <div>
           <ul>
             <li><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></li>
-            <li><MAUserStat /></li>
+            <li><MAUserStat updateCentralPanel={this.updateCentralPanel}/></li>
             <li>Icon3</li>
           </ul>
           {centralDisplay}

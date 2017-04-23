@@ -11,7 +11,9 @@ var MAMainCont = React.createClass({
   propTypes: {
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
-    owner: React.PropTypes.object.isRequired
+    owner: React.PropTypes.string.isRequired,
+    currentParams: React.PropTypes.object.isRequired,
+    loadCurrentParams: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -56,8 +58,8 @@ var MAMainCont = React.createClass({
   },
 
   sendMeetingInfo: function (meeting, attendeeIdx, attendStatus) {
-    var owner = this.props.owner;
-    var indices = eDefs.eLIndices;
+    const owner = this.props.owner;
+    const indices = eDefs.eLIndices;
 
     // Connect to elasticsearch
     var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
