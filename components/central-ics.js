@@ -13,10 +13,6 @@ var MACentralIcs = React.createClass({
     };
   },
 
-  getLocalDate: function (dateStr) {
-    return new Date(dateStr).toLocaleString();
-  },
-
   handleChoice: function (event) {
     var attendStatus = event.target.value;
     var indices = event.target.name.split("-");
@@ -41,11 +37,16 @@ var MACentralIcs = React.createClass({
       const meeting = this.props.meetingList[this.state.numDisplay];
       var prefix = this.state.numDisplay.toString() + "m";
       var self = this;
+      // Function to convert to local date
+      var getLocalDate = function (dateStr) {
+        return new Date(dateStr).toLocaleString();
+      };
+      // Generate result
       return (
         <ul>
           <li key={prefix+"0"}>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
           <li key={prefix+"1"}>Subject: {meeting.summary}</li>
-          <li key={prefix+"2"}>Date: {this.getLocalDate(meeting.dateStart)}</li>
+          <li key={prefix+"2"}>Date: {getLocalDate(meeting.dateStart)}</li>
           <li key={prefix+"3"}>Location: {meeting.location}</li>
           {meeting.attendees.map(function (attendee, idx) {
             var key = prefix + new String(4 + idx);
