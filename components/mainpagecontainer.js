@@ -151,39 +151,37 @@ var MainPageCont = React.createClass({
       }
     },
 
-    loadCurrentParams: function (value, currentUser) {
-      // value is either true or false
-      if ( value ) {
-        //fetch params from engine
-        var self = this;
-        var connectId = this.state.eHost + ':' + this.state.ePort;
-        var client = new elasticsearch.Client({host: connectId, log: 'error'});
-        client.search ({
-          index: eDefs.eLIndices.param,
-          body: {
-            query: {
-              match: {
-                owner: currentUser
-              }
+    flushCurrentParams: function() {
+      this.setState({currentParams: null});
+    },
+
+    loadCurrentParams: function (currentUser) {
+      var self = this;
+      var connectId = this.state.eHost + ':' + this.state.ePort;
+      var client = new elasticsearch.Client({host: connectId, log: 'error'});
+      client.search ({
+        index: eDefs.eLIndices.param,
+        body: {
+          query: {
+            match: {
+              owner: currentUser
             }
           }
-        }, function (err, res, status) {
-          if ( ! err ) {
-            if ( res.hits.total == 1 ) {
-              var updatedParams = res.hits.hits[0]._source;
-              // Add the document id for future updates
-              updatedParams.id = res.hits.hits[0]._id;
-              self.setState({currentParams: updatedParams});
-            } else {
-              // Oh oh! There shouldn't any other number of hits
-              // Reset to default and don't insert any id
-              self.setState({currentParams: eDefs.eDefaultParams});
-            }
+        }
+      }, function (err, res, status) {
+        if ( ! err ) {
+          if ( res.hits.total == 1 ) {
+            var updatedParams = res.hits.hits[0]._source;
+            // Add the document id for future updates
+            updatedParams.id = res.hits.hits[0]._id;
+            self.setState({currentParams: updatedParams});
+          } else {
+            // Oh oh! There shouldn't any other number of hits
+            // Reset to default and don't insert any id
+            self.setState({currentParams: eDefs.eDefaultParams});
           }
-        });
-      } else {
-        this.setState({currentParams: null});
-      }
+        }
+      });
     },
 
     setParams: function (name, value, currentUser) {
@@ -247,6 +245,7 @@ var MainPageCont = React.createClass({
           updateEClient={this.updateEClient}
           currentParams={this.state.currentParams}
           loadCurrentParams={this.loadCurrentParams}
+          flushCurrentParams={this.flushCurrentParams}
           setParams={this.setParams}
         />
       );

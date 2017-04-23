@@ -15,6 +15,7 @@ var MainPage = React.createClass({
       updateEClient: React.PropTypes.func.isRequired,
       currentParams: React.PropTypes.object.isRequired,
       loadCurrentParams: React.PropTypes.func.isRequired,
+      flushCurrentParams: React.PropTypes.func.isRequired,
       setParams: React.PropTypes.func.isRequired
     },
 
@@ -42,6 +43,18 @@ var MainPage = React.createClass({
       // No need to check again
       this.props.updateEClient(true, null, null);
       event.preventDefault();
+    },
+
+    switchOpenParam: function () {
+      if ( this.state.openParam ) {
+        // Flush currentParams and close params panel
+        this.props.flushCurrentParams();
+        this.setState({openParam: false});
+      } else {
+        // Load currentParams and open params panel
+        this.props.loadCurrentParams(this.state.defaultUser);
+        this.setState({openParam: true});
+      }
     },
 
     updateOpenParam: function (value) {
@@ -116,7 +129,7 @@ var MainPage = React.createClass({
 
       return (
         <div>
-          <MAHeader title={this.state.title} updateOpenParam={this.updateOpenParam}/>
+          <MAHeader title={this.state.title} switchOpenParam={this.switchOpenParam}/>
           {this.state.openParam && this.props.currentParams && this.displayParam()}
           {main}
           {!this.props.hideFooter && <MAFooter/>}

@@ -4,11 +4,11 @@ var MAHeader = React.createClass({
 
     propTypes: {
       title: React.PropTypes.string.isRequired,
-      updateOpenParam: React.PropTypes.func.isRequired
+      switchOpenParam: React.PropTypes.func.isRequired
     },
 
     handleSettingsButton: function (event) {
-      this.props.updateOpenParam(true);
+      this.props.switchOpenParam();
     },
 
     render: function () {
