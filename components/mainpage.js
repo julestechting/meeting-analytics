@@ -21,7 +21,8 @@ var MainPage = React.createClass({
     getInitialState: function () {
       return {
         title: "Meeting Analytics",
-        defaultUser: "default"
+        defaultUser: "default",
+        openParam: false
       };
     },
 
@@ -44,11 +45,18 @@ var MainPage = React.createClass({
     },
 
     updateOpenParam: function (value) {
-      this.props.loadCurrentParams(value, this.state.defaultUser);
+      // Avoid loading params if "Preferences" button is pressed and Params are already open
+      if ( !value || !this.state.openParam ) {
+        this.props.loadCurrentParams(value, this.state.defaultUser);
+        this.setState({openParam: value});
+      }
     },
 
     handleUpdateParams: function (event) {
       const value = event.target.name === "hideFooter" ? event.target.checked : event.target.value;
+      if ( event.target.name == "close" ) {
+        this.setState({openParam: false});
+      }
       this.props.setParams(event.target.name, value, this.state.defaultUser);
     },
 
@@ -85,6 +93,8 @@ var MainPage = React.createClass({
             docURL={this.props.docURL}
             connectId={this.props.connectId}
             owner={owner}
+            currentParams={this.props.currentParams}
+            loadCurrentParams={this.props.loadCurrentParams}
           />
         );
       } else {
@@ -107,7 +117,7 @@ var MainPage = React.createClass({
       return (
         <div>
           <MAHeader title={this.state.title} updateOpenParam={this.updateOpenParam}/>
-          {this.props.currentParams && this.displayParam()}
+          {this.state.openParam && this.props.currentParams && this.displayParam()}
           {main}
           {!this.props.hideFooter && <MAFooter/>}
         </div>
