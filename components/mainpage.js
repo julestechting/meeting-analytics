@@ -58,11 +58,13 @@ var MainPage = React.createClass({
     },
 
     handleUpdateParams: function (event) {
-      const value = event.target.name === "hideFooter" ? event.target.checked : event.target.value;
       if ( event.target.name == "close" ) {
-        this.setState({openParam: false});
+        // No need to check if openParam is false as Close button is only visible when openParam is true
+        this.switchOpenParam();
+      } else {
+        const value = event.target.name === "hideFooter" ? event.target.checked : event.target.value;
+        this.props.setParams(event.target.name, value, this.state.defaultUser);
       }
-      this.props.setParams(event.target.name, value, this.state.defaultUser);
     },
 
     displayParam: function () {
