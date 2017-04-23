@@ -30,7 +30,7 @@ var MAMain = React.createClass({
     let centralDisplay = null;
 
     if (centralPanel == 0) {
-      centralDisplay = (<MACentralIcs meetingList={this.props.meetingList} sendMeetingInfo={this.props.sendMeetingInfo}/>);
+      centralDisplay = (<MACentralIcs meetingList={this.props.meetingList} sendMeetingInfo={this.props.sendMeetingInfo} updateMeetingList={this.props.updateMeetingList}/>);
     } else if (centralPanel == 1) {
       centralDisplay = (<MACentralStat />);
     } else {

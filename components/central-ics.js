@@ -4,6 +4,7 @@ var MACentralIcs = React.createClass({
 
   propTypes: {
     sendMeetingInfo: React.PropTypes.func.isRequired,
+    updateMeetingList: React.PropTypes.func.isRequired,
     meetingList: React.PropTypes.array.isRequired
   },
 
@@ -11,6 +12,10 @@ var MACentralIcs = React.createClass({
     return {
       numDisplay: -1
     };
+  },
+
+  componentWillUnmount: function () {
+    this.props.updateMeetingList(null);
   },
 
   handleChoice: function (event) {
