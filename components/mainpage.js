@@ -57,14 +57,6 @@ var MainPage = React.createClass({
       }
     },
 
-    updateOpenParam: function (value) {
-      // Avoid loading params if "Preferences" button is pressed and Params are already open
-      if ( !value || !this.state.openParam ) {
-        this.props.loadCurrentParams(value, this.state.defaultUser);
-        this.setState({openParam: value});
-      }
-    },
-
     handleUpdateParams: function (event) {
       const value = event.target.name === "hideFooter" ? event.target.checked : event.target.value;
       if ( event.target.name == "close" ) {
