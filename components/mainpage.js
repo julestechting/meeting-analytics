@@ -14,7 +14,8 @@ var MainPage = React.createClass({
       hideFooter: React.PropTypes.bool.isRequired,
       updateEClient: React.PropTypes.func.isRequired,
       currentParams: React.PropTypes.object.isRequired,
-      loadCurrentParams: React.PropTypes.func.isRequired
+      loadCurrentParams: React.PropTypes.func.isRequired,
+      setParams: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
@@ -46,10 +47,30 @@ var MainPage = React.createClass({
       this.props.loadCurrentParams(value, this.state.defaultUser);
     },
 
+    handleUpdateParams: function (event) {
+      const value = event.target.name === "hideFooter" ? event.target.checked : event.target.value;
+      this.props.setParams(event.target.name, value, this.state.defaultUser);
+    },
+
     displayParam: function () {
-      //fetch data
       return (
-        <div>Open!</div>
+        <div>
+          <form>
+            <input type="button" name="close" value="Close" onClick={this.handleUpdateParams}/><br/>
+            <label>Search range:
+              <input type="number" name="defaultDuration" min="0" value={this.props.currentParams.defaultDuration} onChange={this.handleUpdateParams}/>
+              <select name="defaultDurationUnit" value={this.props.currentParams.defaultDurationUnit} onChange={this.handleUpdateParams}>
+                <option value="H">Hour</option>
+                <option value="D">Day</option>
+                <option value="M">Month</option>
+                <option value="Y">Year</option>
+              </select>
+            </label><br/>
+            <label>Hide credits in the footer
+              <input type="checkbox" name="hideFooter" checked={this.props.currentParams.hideFooter} onChange={this.handleUpdateParams}/>
+            </label>
+          </form>
+        </div>
       );
     },
 

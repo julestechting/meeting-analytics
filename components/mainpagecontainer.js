@@ -170,16 +170,68 @@ var MainPageCont = React.createClass({
         }, function (err, res, status) {
           if ( ! err ) {
             if ( res.hits.total == 1 ) {
-              self.setState({currentParams: res.hits.hits[0]._source});
+              var updatedParams = res.hits.hits[0]._source;
+              // Add the document id for future updates
+              updatedParams.id = res.hits.hits[0]._id;
+              self.setState({currentParams: updatedParams});
             } else {
               // Oh oh! There shouldn't any other number of hits
-              // Reset to default
+              // Reset to default and don't insert any id
               self.setState({currentParams: eDefs.eDefaultParams});
             }
           }
         });
       } else {
         this.setState({currentParams: null});
+      }
+    },
+
+    setParams: function (name, value, currentUser) {
+      if ( name == "close" ) {
+        this.setState({currentParams: null});
+      } else {
+        var params = this.state.currentParams;
+        params[name] = value;
+        this.setState({currentParams: params});
+        if ( name == "hideFooter") { this.setState({hideFooter: value}) }
+        // Update document in engine
+        var connectId = this.state.eHost + ':' + this.state.ePort;
+        var client = new elasticsearch.Client({host: connectId, log: 'error'});
+        // Check if document exists already
+        if ( params.id ) {
+          var doc = {};
+          doc[name]=value;
+          client.update({
+            index: eDefs.eLIndices.param,
+            type: eDefs.eLIndices.paramType,
+            id: params.id,
+            body: {
+              doc: doc
+            }},
+            function (err, res, status) {
+              if ( err ) {
+                // Should probably notify of the error
+              }
+            }
+          );
+        } else {
+          var self = this;
+          client.index({
+            index: eDefs.eLIndices.param,
+            type: eDefs.eLIndices.paramType,
+            body: params
+            },
+            function (err, res, status) {
+              if ( err ) {
+                // Should probably notify of the error
+              } else {
+                // Insert new document id into params
+                params.id = res._id;
+                self.setState({currentParams: params});
+              }
+            }
+          );
+        }
       }
     },
 
@@ -195,6 +247,7 @@ var MainPageCont = React.createClass({
           updateEClient={this.updateEClient}
           currentParams={this.state.currentParams}
           loadCurrentParams={this.loadCurrentParams}
+          setParams={this.setParams}
         />
       );
     }
