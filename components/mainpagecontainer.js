@@ -42,7 +42,6 @@ var MainPageCont = React.createClass({
 
           client.indices.exists({index: eIndex.index}, function (err, res, status) {
             if ( !res ) {
-              // ISSUE! INDICES CREATED EVEN IF ALREADY EXIST!
               // Generate a random string to use as index name - Used index name will be an alias
               var randomIndex = Math.random().toString(36).slice(5);
               client.indices.create({index: randomIndex, body: eIndex.body}, function (err, res, status) {
