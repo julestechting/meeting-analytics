@@ -27,22 +27,28 @@ export const eIndices = [
         "attendance": {
           "properties": {
             "owner": { "type": "keyword" },
-            "attendeeName": { "type": "text" },
-            "attendeeMail": {
+            "attendeeName": {
               "type": "text",
               "fields": {
-                "raw": { "type": "keyword" }
+                "ngram": {
+                  "type": "text",
+                  "analyzer": "ngram-analyzer"
+                }
+              }
+            },
+            "attendeeMail": {
+              "type": "keyword",
+              "fields": {
+                "ngram": {
+                  "type": "text",
+                  "analyzer": "ngram-analyzer"
+                }
               }
             },
             "role": { "type": "keyword" },
             "status": { "type": "keyword" },
             "organizerName": { "type": "text" },
-            "organizerMail": {
-              "type": "text",
-              "fields": {
-                "raw": { "type": "keyword" }
-              }
-            },
+            "organizerMail": { "type": "keyword" },
             "subject": {
               "type": "text",
               "fields": {
@@ -50,6 +56,26 @@ export const eIndices = [
               }
             },
             "start": { "type": "date" }
+          }
+        }
+      },
+      "settings": {
+        "analysis": {
+          "analyzer": {
+            "ngram-analyzer": {
+              "tokenizer": "ngram-tokenizer"
+            }
+          },
+          "tokenizer": {
+            "ngram-tokenizer": {
+              "type": "ngram",
+              "min_gram": "3",
+              "max_gram": "10",
+              "token_chars": [
+                "letter",
+                "digit"
+              ],
+            }
           }
         }
       },

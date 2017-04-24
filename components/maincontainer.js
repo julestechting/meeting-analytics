@@ -74,8 +74,8 @@ var MAMainCont = React.createClass({
             filter: [
               {term: {owner: owner}},
               {term: {"subject.raw": meeting.summary}},
-              {term: {"organizerMail.raw": meeting.organizer.mail}},
-              {term: {"attendeeMail.raw": meeting.attendees[attendeeIdx].mail}},
+              {term: {organizerMail: meeting.organizer.mail}},
+              {term: {attendeeMail: meeting.attendees[attendeeIdx].mail}},
               {term: {start: meeting.dateStart}}
             ]
           }
