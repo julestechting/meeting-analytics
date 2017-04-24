@@ -71,12 +71,12 @@ var MAMainCont = React.createClass({
       body: {
         query: {
           bool: {
-            must: [
-              {match: {owner: owner}},
-              {match: {"subject.raw": meeting.summary}},
-              {match: {"organizerMail.raw": meeting.organizer.mail}},
-              {match: {"attendeeMail.raw": meeting.attendees[attendeeIdx].mail}},
-              {match: {start: meeting.dateStart}}
+            filter: [
+              {term: {owner: owner}},
+              {term: {"subject.raw": meeting.summary}},
+              {term: {"organizerMail.raw": meeting.organizer.mail}},
+              {term: {"attendeeMail.raw": meeting.attendees[attendeeIdx].mail}},
+              {term: {start: meeting.dateStart}}
             ]
           }
         }
