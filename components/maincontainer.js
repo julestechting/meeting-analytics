@@ -138,8 +138,8 @@ var MAMainCont = React.createClass({
               { term: { owner: owner }}
             ],
             should: [
-              { term: { "attendeeName.ngram": searchStr }},
-              { term: { "attendeeMail.ngram": searchStr }}
+              { match: { "attendeeName.ngram": searchStr }},
+              { match: { "attendeeMail.ngram": searchStr }}
             ],
             minimum_should_match: 1
           }
