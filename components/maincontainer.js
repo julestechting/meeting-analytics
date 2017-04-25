@@ -18,7 +18,8 @@ var MAMainCont = React.createClass({
 
   getInitialState: function () {
     return {
-      meetingList: []
+      meetingList: [],
+      searchResults: [],
     };
   },
 
@@ -114,8 +115,41 @@ var MAMainCont = React.createClass({
             });
           } else {
             // OH OH! There shouldn't be more than 1 records!
-            alert("ERROR");
+            // Should probably notify of the error
           }
+        }
+      }
+    );
+  },
+
+  searchUser: function (searchStr) {
+    const owner = this.props.owner;
+    const indices = eDefs.eLIndices;
+    var self = this;
+
+    // Connect to elasticsearch
+    var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
+    client.search({
+      index: indices.attendance,
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { owner: owner }}
+            ],
+            should: [
+              { term: { "attendeeName.ngram": searchStr }},
+              { term: { "attendeeMail.ngram": searchStr }}
+            ],
+            minimum_should_match: 1
+          }
+        }
+      }},
+      function (err, res, status) {
+        if ( !err ) {
+          self.setState({searchResults: res.hits.hits});
+        } else {
+          // Should probably notify of the error
         }
       }
     );
@@ -124,10 +158,12 @@ var MAMainCont = React.createClass({
   render: function () {
 
     return (
-        <MAMain
-          meetingList={this.state.meetingList}
-          updateMeetingList={this.updateMeetingList}
-          sendMeetingInfo={this.sendMeetingInfo} />
+      <MAMain
+        meetingList={this.state.meetingList}
+        updateMeetingList={this.updateMeetingList}
+        sendMeetingInfo={this.sendMeetingInfo}
+        searchResults={this.state.searchResults}
+        searchUser={this.searchUser} />
     );
   }
 });

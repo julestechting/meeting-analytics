@@ -11,7 +11,9 @@ var MAMain = React.createClass({
   propTypes: {
     meetingList: React.PropTypes.array.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
-    sendMeetingInfo: React.PropTypes.func.isRequired
+    sendMeetingInfo: React.PropTypes.func.isRequired,
+    searchResults: React.PropTypes.array.isRequired,
+    searchUser: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -32,7 +34,7 @@ var MAMain = React.createClass({
     if (centralPanel == 0) {
       centralDisplay = (<MACentralIcs meetingList={this.props.meetingList} sendMeetingInfo={this.props.sendMeetingInfo} updateMeetingList={this.props.updateMeetingList}/>);
     } else if (centralPanel == 1) {
-      centralDisplay = (<MACentralStat />);
+      centralDisplay = (<MACentralStat searchResults={this.props.searchResults} searchUser={this.props.searchUser} />);
     } else {
       //Change to put icons
       centralDisplay = (

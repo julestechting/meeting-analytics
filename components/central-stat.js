@@ -2,11 +2,11 @@ var React = require('react');
 
 var MACentralStat = React.createClass({
 
-  /*
   propTypes: {
-
+    searchResults: React.PropTypes.array.isRequired,
+    searchUser: React.PropTypes.func.isRequired
   },
-
+  /*
   getInitialState: function () {
     return {
       targetUser: null
@@ -14,15 +14,22 @@ var MACentralStat = React.createClass({
   },
   */
 
-  buildAutoComplete: function () {
-
+  buildAutoComplete: function (id) {
+    if ( this.props.searchResults.length > 0 ) {
+      var self = this;
+      return (
+        <datalist id={id}>
+        {self.props.searchResults.map(function (hit) {
+          const str = hit._source.attendeeName + " (" + hit._source.attendeeMail + ")";
+          return (<option value={str} />);
+        })}
+        </datalist>
+      );
+    }
   },
 
   handleAutoComplete: function (event) {
-    var searchText = event.target.value;
-    if ( searchText.length > 2 ) {
-      // get autocomplete
-    }
+    this.props.searchUser(event.target.value);
   },
 
   handleSearch: function (event) {
@@ -39,10 +46,8 @@ var MACentralStat = React.createClass({
       <div>
         <form onSubmit={this.handleSearch}>
           <label>Search name:
-            <input type="search" name="nameSearch" list="usersList" onChange={this.handleAutoComplete}/>
-            <datalist id="usersList">
-              {this.buildAutoComplete}
-            </datalist>
+            <input list="usersList" name="nameSearch" onChange={this.handleAutoComplete}/>
+            {this.buildAutoComplete("usersList")}
             <input type="Submit" value="Submit" />
           </label>
         </form>
