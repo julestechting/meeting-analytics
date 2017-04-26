@@ -36,10 +36,11 @@ var MACentralStat = React.createClass({
   },
 
   handleAutoComplete: function (event) {
-    this.props.searchUser(event.target.value);
+    this.props.searchUser(event.target.value, 5);
   },
 
   handleSearch: function (event) {
+    this.props.searchUser(event.target.value, 15);
     event.preventDefault();
   },
 

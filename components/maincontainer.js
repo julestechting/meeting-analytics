@@ -122,7 +122,7 @@ var MAMainCont = React.createClass({
     );
   },
 
-  searchUser: function (searchStr) {
+  searchUser: function (searchStr, number) {
     const owner = this.props.owner;
     const indices = eDefs.eLIndices;
     var self = this;
@@ -132,6 +132,7 @@ var MAMainCont = React.createClass({
     client.search({
       index: indices.attendance,
       body: {
+        size: number,
         query: {
           bool: {
             filter: [
