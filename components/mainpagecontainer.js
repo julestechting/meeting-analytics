@@ -54,8 +54,8 @@ var MainPageCont = React.createClass({
                 index: eIndex.index,
                 body: {
                   query: {
-                    match: {
-                      owner: defaultParams.owner
+                    bool: {
+                      filter: [ {term: {owner: defaultParams.owner}} ]
                     }
                   }
                 }
@@ -162,8 +162,8 @@ var MainPageCont = React.createClass({
         index: eDefs.eLIndices.param,
         body: {
           query: {
-            match: {
-              owner: currentUser
+            bool: {
+              filter: [ {term: {owner: currentUser}} ]
             }
           }
         }
