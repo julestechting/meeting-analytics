@@ -63,7 +63,8 @@ export const eIndices = [
         "analysis": {
           "analyzer": {
             "ngram-analyzer": {
-              "tokenizer": "ngram-tokenizer"
+              "tokenizer": "ngram-tokenizer",
+              "filter": [ "lowercase" ]
             }
           },
           "tokenizer": {
