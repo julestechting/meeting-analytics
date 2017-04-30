@@ -46,6 +46,7 @@ export const eIndices = [
               }
             },
             "role": { "type": "keyword" },
+            "accept": { "type": "keyword"},
             "status": { "type": "keyword" },
             "organizerName": { "type": "text" },
             "organizerMail": { "type": "keyword" },

@@ -93,6 +93,7 @@ var MAMainCont = React.createClass({
                 owner: owner,
                 attendeeName: meeting.attendees[attendeeIdx].name,
                 attendeeMail: meeting.attendees[attendeeIdx].mail,
+                accept: meeting.attendees[attendeeIdx].accept,
                 role: meeting.attendees[attendeeIdx].role,
                 status: attendStatus,
                 organizerName: meeting.organizer.cn,
