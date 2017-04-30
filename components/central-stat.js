@@ -5,13 +5,23 @@ var MACentralStat = React.createClass({
   propTypes: {
     searchResults: React.PropTypes.array.isRequired,
     searchRange: React.PropTypes.string,
-    searchUser: React.PropTypes.func.isRequired
+    searchUser: React.PropTypes.func.isRequired,
+    loadCurrentSearchRange: React.PropTypes.func.isRequired,
+    flushCurrentSearchRange: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
     return {
       targetUser: null
     };
+  },
+
+  componentDidMount: function () {
+    this.props.loadCurrentSearchRange();
+  },
+
+  componentWillUnmount: function () {
+    this.props.flushCurrentSearchRange();
   },
 
   selectUser: function (event) {

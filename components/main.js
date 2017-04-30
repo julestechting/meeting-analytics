@@ -14,7 +14,9 @@ var MAMain = React.createClass({
     sendMeetingInfo: React.PropTypes.func.isRequired,
     searchResults: React.PropTypes.array.isRequired,
     searchRange: React.PropTypes.string,
-    searchUser: React.PropTypes.func.isRequired
+    searchUser: React.PropTypes.func.isRequired,
+    loadCurrentSearchRange: React.PropTypes.func.isRequired,
+    flushCurrentSearchRange: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -45,6 +47,8 @@ var MAMain = React.createClass({
           searchResults={this.props.searchResults}
           searchUser={this.props.searchUser}
           searchRange={this.props.searchRange}
+          loadCurrentSearchRange={this.props.loadCurrentSearchRange}
+          flushCurrentSearchRange={this.props.flushCurrentSearchRange}
         />);
     } else {
       //Change to put icons

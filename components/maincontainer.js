@@ -157,6 +157,21 @@ var MAMainCont = React.createClass({
     );
   },
 
+  flushCurrentSearchRange: function () {
+    this.setState({searchRange: null});
+  },
+
+  loadSearchRangeCallback: function (params) {
+    if ( params.defaultDuration > 0 ) {
+      const range = "-" + params.defaultDuration + params.defaultDurationUnit;
+      this.setState({searchRange: range});
+    }
+  },
+
+  loadCurrentSearchRange: function () {
+    this.props.getParamsWithCallback(this.props.connectId, this.props.owner, this.loadSearchRangeCallback);
+  },
+
   render: function () {
 
     return (
@@ -166,7 +181,9 @@ var MAMainCont = React.createClass({
         sendMeetingInfo={this.sendMeetingInfo}
         searchResults={this.state.searchResults}
         searchUser={this.searchUser}
-        searchRange={this.state.searchRange} />
+        searchRange={this.state.searchRange}
+        loadCurrentSearchRange={this.loadCurrentSearchRange}
+        flushCurrentSearchRange={this.flushCurrentSearchRange} />
     );
   }
 });
