@@ -12,14 +12,14 @@ var MAMainCont = React.createClass({
     docURL: React.PropTypes.string.isRequired,
     connectId: React.PropTypes.string.isRequired,
     owner: React.PropTypes.string.isRequired,
-    currentParams: React.PropTypes.object.isRequired,
-    loadCurrentParams: React.PropTypes.func.isRequired
+    getParamsWithCallback: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
     return {
       meetingList: [],
       searchResults: [],
+      searchRange: null
     };
   },
 
@@ -165,7 +165,8 @@ var MAMainCont = React.createClass({
         updateMeetingList={this.updateMeetingList}
         sendMeetingInfo={this.sendMeetingInfo}
         searchResults={this.state.searchResults}
-        searchUser={this.searchUser} />
+        searchUser={this.searchUser}
+        searchRange={this.state.searchRange} />
     );
   }
 });

@@ -251,6 +251,7 @@ var MainPageCont = React.createClass({
           loadCurrentParams={this.loadCurrentParams}
           flushCurrentParams={this.flushCurrentParams}
           setParams={this.setParams}
+          getParamsWithCallback={this.getParamsWithCallback}
         />
       );
     }

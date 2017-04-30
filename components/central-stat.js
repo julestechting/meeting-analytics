@@ -4,6 +4,7 @@ var MACentralStat = React.createClass({
 
   propTypes: {
     searchResults: React.PropTypes.array.isRequired,
+    searchRange: React.PropTypes.string,
     searchUser: React.PropTypes.func.isRequired
   },
 
@@ -44,8 +45,7 @@ var MACentralStat = React.createClass({
     event.preventDefault();
   },
 
-  render: function () {
-
+  displaySearch: function () {
     return (
       <div>
         <form onSubmit={this.handleSearch}>
@@ -56,6 +56,25 @@ var MACentralStat = React.createClass({
         </form>
         {this.displayResults()}
       </div>
+    );
+  },
+
+  resetUser: function (event) {
+    this.setState({targetUser: null});
+  },
+
+  showStats: function () {
+    return (
+      <div>
+        <div><button value="clear" onClick={this.resetUser}>Clear selection</button></div>
+        {this.state.targetUser}
+      </div>
+    );
+  },
+
+  render: function () {
+    return (
+      <div>{this.state.targetUser ? this.showStats() : this.displaySearch()}</div>
     );
   }
 });

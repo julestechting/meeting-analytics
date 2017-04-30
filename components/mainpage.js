@@ -16,7 +16,8 @@ var MainPage = React.createClass({
       currentParams: React.PropTypes.object.isRequired,
       loadCurrentParams: React.PropTypes.func.isRequired,
       flushCurrentParams: React.PropTypes.func.isRequired,
-      setParams: React.PropTypes.func.isRequired
+      setParams: React.PropTypes.func.isRequired,
+      getParamsWithCallback: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
@@ -100,8 +101,7 @@ var MainPage = React.createClass({
             docURL={this.props.docURL}
             connectId={this.props.connectId}
             owner={owner}
-            currentParams={this.props.currentParams}
-            loadCurrentParams={this.props.loadCurrentParams}
+            getParamsWithCallback={this.props.getParamsWithCallback}
           />
         );
       } else {
