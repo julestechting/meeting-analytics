@@ -154,9 +154,16 @@ var MainPageCont = React.createClass({
       this.setState({currentParams: null});
     },
 
+    loadCurrentParamsCallback: function (params) {
+      this.setState({currentParams: params});
+    },
+
     loadCurrentParams: function (currentUser) {
-      var self = this;
       var connectId = this.state.eHost + ':' + this.state.ePort;
+      this.getParamsWithCallback(connectId, currentUser, this.loadCurrentParamsCallback);
+    },
+
+    getParamsWithCallback: function (connectId, currentUser, paramCallback) {
       var client = new elasticsearch.Client({host: connectId, log: 'error'});
       client.search ({
         index: eDefs.eLIndices.param,
@@ -173,11 +180,11 @@ var MainPageCont = React.createClass({
             var updatedParams = res.hits.hits[0]._source;
             // Add the document id for future updates
             updatedParams.id = res.hits.hits[0]._id;
-            self.setState({currentParams: updatedParams});
+            paramCallback(updatedParams);
           } else {
             // Oh oh! There shouldn't any other number of hits
             // Reset to default and don't insert any id
-            self.setState({currentParams: eDefs.eDefaultParams});
+            paramCallback(eDefs.eDefaultParams);
           }
         } else {
           // Should probably notify of the error
