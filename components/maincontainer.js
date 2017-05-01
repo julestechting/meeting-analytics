@@ -124,20 +124,17 @@ var MAMainCont = React.createClass({
   },
 
   searchUser: function (searchStr, number) {
-    const owner = this.props.owner;
-    const indices = eDefs.eLIndices;
     var self = this;
-
     // Connect to elasticsearch
     var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
     client.search({
-      index: indices.attendance,
+      index: eDefs.eLIndices.attendance,
       body: {
         size: number,
         query: {
           bool: {
             filter: [
-              { term: { owner: owner }}
+              { term: { owner: self.props.owner }}
             ],
             should: [
               { match: { "attendeeName.ngram": searchStr }},
@@ -172,6 +169,72 @@ var MAMainCont = React.createClass({
     this.props.getParamsWithCallback(this.props.connectId, this.props.owner, this.loadSearchRangeCallback);
   },
 
+  getStatsWithCallback: function (statType, mail, statCallback) {
+    var self = this;
+    // Build request body base
+    var reqBody = {
+      size: 0,
+      query: {
+        constant_score: {
+          filter: {
+            bool: {
+              must: [
+                { term: { owner: self.props.owner }},
+                { term: { attendeeMail: mail }}
+              ]
+            }
+          }
+        }
+      },
+      aggs: {}
+    };
+    // Update reqBody based on statType
+    switch (statType) {
+      case "AttSc":
+        reqBody.aggs = {
+          AttSc: {
+            filter: {
+				      terms: { status: ["AOT", "AL"] }
+			      }
+          }
+        };
+        break;
+      case "AccSc":
+        reqBody.aggs = {
+          NoAccSc: {
+            filter: {
+              terms: { accept: ["NEEDS-ACTION"] }
+            }
+          }
+        };
+        break;
+      default:
+        // Do nothing
+    }
+    // Connect to elasticsearch
+    var client = new elasticsearch.Client({host: this.props.connectId, log: 'error'});
+    client.search({
+      index: eDefs.eLIndices.attendance,
+      body: reqBody},
+      function (err, res, status) {
+        if ( !err ) {
+          switch (statType) {
+            case "AttSc":
+              statCallback(res.aggregations.AttSc.doc_count / res.hits.total);
+              break;
+            case "AccSc":
+              statCallback(1 - (res.aggregations.NoAccSc.doc_count / res.hits.total));
+              break;
+            default:
+              // Do nothing
+          }
+        } else {
+          // Should probably notify of the error
+        }
+      }
+    );
+  },
+
   render: function () {
 
     return (
@@ -183,7 +246,8 @@ var MAMainCont = React.createClass({
         searchUser={this.searchUser}
         searchRange={this.state.searchRange}
         loadCurrentSearchRange={this.loadCurrentSearchRange}
-        flushCurrentSearchRange={this.flushCurrentSearchRange} />
+        flushCurrentSearchRange={this.flushCurrentSearchRange}
+        getStatsWithCallback={this.getStatsWithCallback}/>
     );
   }
 });

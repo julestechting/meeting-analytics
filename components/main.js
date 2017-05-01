@@ -16,7 +16,8 @@ var MAMain = React.createClass({
     searchRange: React.PropTypes.string,
     searchUser: React.PropTypes.func.isRequired,
     loadCurrentSearchRange: React.PropTypes.func.isRequired,
-    flushCurrentSearchRange: React.PropTypes.func.isRequired
+    flushCurrentSearchRange: React.PropTypes.func.isRequired,
+    getStatsWithCallback: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
@@ -49,6 +50,7 @@ var MAMain = React.createClass({
           searchRange={this.props.searchRange}
           loadCurrentSearchRange={this.props.loadCurrentSearchRange}
           flushCurrentSearchRange={this.props.flushCurrentSearchRange}
+          getStatsWithCallback={this.props.getStatsWithCallback}
         />);
     } else {
       //Change to put icons

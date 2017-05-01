@@ -7,12 +7,15 @@ var MACentralStat = React.createClass({
     searchRange: React.PropTypes.string,
     searchUser: React.PropTypes.func.isRequired,
     loadCurrentSearchRange: React.PropTypes.func.isRequired,
-    flushCurrentSearchRange: React.PropTypes.func.isRequired
+    flushCurrentSearchRange: React.PropTypes.func.isRequired,
+    getStatsWithCallback: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
     return {
-      targetUser: null
+      targetUser: null,
+      scoreAttendance: null,
+      scoreAccept: null
     };
   },
 
@@ -25,7 +28,8 @@ var MACentralStat = React.createClass({
   },
 
   selectUser: function (event) {
-    this.setState({targetUser: event.target.value});
+    const targetUser = JSON.parse(event.target.value);
+    this.setState({targetUser: targetUser});
   },
 
   displayResults: function () {
@@ -35,8 +39,9 @@ var MACentralStat = React.createClass({
         <ul>
           {self.props.searchResults.map(function (hit) {
             const str = hit._source.attendeeName + " (" + hit._source.attendeeMail + ")";
+            const val = JSON.stringify({name: hit._source.attendeeName, mail: hit._source.attendeeMail});
             return (
-              <li><button value={hit._source.attendeeMail} onClick={self.selectUser}>{str}</button></li>
+              <li><button value={val} onClick={self.selectUser}>{str}</button></li>
             );
           })}
         </ul>
@@ -71,20 +76,35 @@ var MACentralStat = React.createClass({
 
   resetUser: function (event) {
     this.setState({targetUser: null});
+    // Reset searchResults
+    this.props.searchUser("", 0);
   },
 
-  showStats: function () {
+  displayAttendanceScore: function (score) {
+    const AttSc = ( <div>Attendance Score = {score}</div> );
+    this.setState({scoreAttendance: AttSc});
+  },
+
+  displayAcceptScore: function (score) {
+    const AccSc = ( <div>Meeting Accept Score = {score}</div> );
+    this.setState({scoreAccept: AccSc});
+  },
+
+  displayStats: function () {
     return (
       <div>
         <div><button value="clear" onClick={this.resetUser}>Clear selection</button></div>
-        {this.state.targetUser}
+        <div>Name: {this.state.targetUser.name}</div>
+        <div>Email: {this.state.targetUser.mail}</div>
+        {this.state.scoreAttendance || this.props.getStatsWithCallback("AttSc", this.state.targetUser.mail, this.displayAttendanceScore)}
+        {this.state.scoreAccept || this.props.getStatsWithCallback("AccSc", this.state.targetUser.mail, this.displayAcceptScore)}
       </div>
     );
   },
 
   render: function () {
     return (
-      <div>{this.state.targetUser ? this.showStats() : this.displaySearch()}</div>
+      <div>{this.state.targetUser ? this.displayStats() : this.displaySearch()}</div>
     );
   }
 });
