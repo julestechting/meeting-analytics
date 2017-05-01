@@ -56,7 +56,7 @@ var MACentralStat = React.createClass({
   },
 
   handleSearch: function (event) {
-    this.props.searchUser(event.target.value, 15);
+    this.props.searchUser(event.target[0].value, 15);
     event.preventDefault();
   },
 
