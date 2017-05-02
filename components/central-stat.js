@@ -20,11 +20,13 @@ var MACentralStat = React.createClass({
   },
 
   componentDidMount: function () {
+    //TODO Must update when parameters are changed after searchRange has been loaded
     this.props.loadCurrentSearchRange();
   },
 
   componentWillUnmount: function () {
     this.props.flushCurrentSearchRange();
+    this.props.searchUser("", 0);
   },
 
   selectUser: function (event) {
@@ -75,7 +77,7 @@ var MACentralStat = React.createClass({
   },
 
   resetUser: function (event) {
-    this.setState({targetUser: null});
+    this.setState({targetUser: null, scoreAttendance: null, scoreAccept: null});
     // Reset searchResults
     this.props.searchUser("", 0);
   },
