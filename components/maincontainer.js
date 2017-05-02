@@ -146,6 +146,7 @@ var MAMainCont = React.createClass({
       }},
       function (err, res, status) {
         if ( !err ) {
+          // TODO should we find a way to return unique values?
           self.setState({searchResults: res.hits.hits});
         } else {
           // Should probably notify of the error
@@ -188,6 +189,19 @@ var MAMainCont = React.createClass({
       },
       aggs: {}
     };
+    // Take into account searchRange
+    if ( this.state.searchRange ) {
+      const dateFilterStr = "now" + this.state.searchRange;
+      const dateFilter = {
+        range: {
+          start: {
+            gte: dateFilterStr,
+            lte: "now"
+          }
+        }
+      };
+      reqBody.query.constant_score.filter.bool.must[2] = dateFilter;
+    }
     // Update reqBody based on statType
     switch (statType) {
       case "AttSc":
