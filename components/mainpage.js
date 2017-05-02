@@ -77,9 +77,10 @@ var MainPage = React.createClass({
               <input type="number" name="defaultDuration" min="0" value={this.props.currentParams.defaultDuration} onChange={this.handleUpdateParams}/>
               <select name="defaultDurationUnit" value={this.props.currentParams.defaultDurationUnit} onChange={this.handleUpdateParams}>
                 <option value="H">Hour</option>
-                <option value="D">Day</option>
+                <option value="d">Day</option>
+                <option value="w">Week</option>
                 <option value="M">Month</option>
-                <option value="Y">Year</option>
+                <option value="y">Year</option>
               </select>
             </label><br/>
             <label>Hide credits in the footer

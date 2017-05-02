@@ -4,7 +4,7 @@
 
 export const eDefaultParams = {
     defaultDuration: 1,
-    defaultDurationUnit: 'Y',
+    defaultDurationUnit: 'y',
     owner: 'default',
     hideFooter: false
 };
