@@ -198,7 +198,7 @@ var MainPageCont = React.createClass({
       this.setState({currentParams: params});
       if ( name == "hideFooter") { this.setState({hideFooter: value}); }
       // If value is empty, don't send data to the engine
-      if ( value != "" ) {
+      if ( value !== "" ) {
         // Data cleaning - removing zeros on the left of defaultDuration
         if ( name == "defaultDuration" ) {
           value = parseInt(value);
