@@ -196,44 +196,47 @@ var MainPageCont = React.createClass({
       var params = this.state.currentParams;
       params[name] = value;
       this.setState({currentParams: params});
-      if ( name == "hideFooter") { this.setState({hideFooter: value}) }
-      // Update document in engine
-      var connectId = this.state.eHost + ':' + this.state.ePort;
-      var client = new elasticsearch.Client({host: connectId, log: 'error'});
-      // Check if document exists already
-      if ( params.id ) {
-        var doc = {};
-        doc[name]=value;
-        client.update({
-          index: eDefs.eLIndices.param,
-          type: eDefs.eLIndices.paramType,
-          id: params.id,
-          body: {
-            doc: doc
-          }},
-          function (err, res, status) {
-            if ( err ) {
-              // Should probably notify of the error
+      if ( name == "hideFooter") { this.setState({hideFooter: value}); }
+      // If value is empty, don't send data to the engine
+      if ( value != "" ) {
+        // Update document in engine
+        var connectId = this.state.eHost + ':' + this.state.ePort;
+        var client = new elasticsearch.Client({host: connectId, log: 'error'});
+        // Check if document exists already
+        if ( params.id ) {
+          var doc = {};
+          doc[name]=value;
+          client.update({
+            index: eDefs.eLIndices.param,
+            type: eDefs.eLIndices.paramType,
+            id: params.id,
+            body: {
+              doc: doc
+            }},
+            function (err, res, status) {
+              if ( err ) {
+                // Should probably notify of the error
+              }
             }
-          }
-        );
-      } else {
-        var self = this;
-        client.index({
-          index: eDefs.eLIndices.param,
-          type: eDefs.eLIndices.paramType,
-          body: params
-          },
-          function (err, res, status) {
-            if ( err ) {
-              // Should probably notify of the error
-            } else {
-              // Insert new document id into params
-              params.id = res._id;
-              self.setState({currentParams: params});
+          );
+        } else {
+          var self = this;
+          client.index({
+            index: eDefs.eLIndices.param,
+            type: eDefs.eLIndices.paramType,
+            body: params
+            },
+            function (err, res, status) {
+              if ( err ) {
+                // Should probably notify of the error
+              } else {
+                // Insert new document id into params
+                params.id = res._id;
+                self.setState({currentParams: params});
+              }
             }
-          }
-        );
+          );
+        }
       }
     },
 
