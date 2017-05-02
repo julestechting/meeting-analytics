@@ -199,6 +199,15 @@ var MainPageCont = React.createClass({
       if ( name == "hideFooter") { this.setState({hideFooter: value}); }
       // If value is empty, don't send data to the engine
       if ( value != "" ) {
+        // Data cleaning - removing zeros on the left of defaultDuration
+        if ( name == "defaultDuration" ) {
+          try {
+            value = parseInt(value);
+          } catch (err) {
+            // In case of error, reset to default value
+            value = eDefs.eDefaultParams.defaultDuration;
+          }
+        }
         // Update document in engine
         var connectId = this.state.eHost + ':' + this.state.ePort;
         var client = new elasticsearch.Client({host: connectId, log: 'error'});
