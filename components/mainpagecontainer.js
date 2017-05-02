@@ -201,12 +201,9 @@ var MainPageCont = React.createClass({
       if ( value != "" ) {
         // Data cleaning - removing zeros on the left of defaultDuration
         if ( name == "defaultDuration" ) {
-          try {
-            value = parseInt(value);
-          } catch (err) {
-            // In case of error, reset to default value
-            value = eDefs.eDefaultParams.defaultDuration;
-          }
+          value = parseInt(value);
+          // In case of error, reset to default value
+          if ( value == "NaN" ) { value = eDefs.eDefaultParams.defaultDuration; }
         }
         // Update document in engine
         var connectId = this.state.eHost + ':' + this.state.ePort;
