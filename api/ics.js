@@ -3,7 +3,16 @@ var moment = require('moment-timezone');
 exports.icsParse = function (icsData) {
 
   // makeDate: Convert text string to Date object in UTC format
-  var makeDate = function (tmz, icsDate) {
+  var makeDate = function (tmz, browtz, icsDate) {
+    // Check if timezone is formatted according to IANA standard
+    if ( !(moment.tz.zone(tmz)) ) {
+      // In case of unknown format, use browser timezone if set or the computer timezone as current
+      if ( browtz !== "" ) {
+        tmz = browtz;
+      } else {
+        tmz = moment.tz.guess();
+      }
+    }
     return moment.tz(icsDate,tmz).tz('utc').format();
   };
 
@@ -14,7 +23,8 @@ exports.icsParse = function (icsData) {
     var m = 0, // meeting number in meetingList
         a = 0; // attendee number in meeting
     var state = "",
-        tz="UTC";
+        tz="UTC",
+        browtz="";
     for ( var i=0; i<calArray.length; i++ ) {
       if ( state != "") {
         var tag = calArray[i].split(':')[0];
@@ -24,22 +34,22 @@ exports.icsParse = function (icsData) {
           tz = val;
         }
         if ( state == "VEVENT" ) {
-          switch (tag) {
-            case "DTSTART;VALUE=DATE":
-            case "DTSTART":
-              meeting.dateStart = makeDate(tz,val);
+
+          //switch (tag) {
+          switch (true) {
+            case tag.startsWith("DTSTART"):
+              meeting.dateStart = makeDate(tz, browtz, val);
               break;
-            case "DTEND;VALUE=DATE":
-            case "DTEND":
-              meeting.dateEnd = makeDate(tz,val);
+            case tag.startsWith("DTEND"):
+              meeting.dateEnd = makeDate(tz, browtz, val);
               break;
-            case "SUMMARY":
+            case tag.startsWith("SUMMARY"):
               meeting.summary = val;
               break;
-            case "LOCATION":
+            case (tag == "LOCATION"):
               meeting.location = val;
               break;
-            case "DESCRIPTION":
+            case (tag == "DESCRIPTION"):
               meeting.description = val;
               break;
             default:
@@ -69,6 +79,9 @@ exports.icsParse = function (icsData) {
           }
         }
       }
+      // Retrive the browser timezone at the beginning of icsData
+      if ( calArray[i].startsWith("BROWTZID") ) { browtz = calArray[i].split(':')[1]; }
+
       switch (calArray[i]) {
         case "END:VTIMEZONE":
           state = "";
@@ -106,7 +119,6 @@ exports.icsParse = function (icsData) {
     }
     return meetingList;
   };
-
   // Load file and launch parsing
   var calArray = icsData.replace(new RegExp( "\\n\\s", "g" ), "").replace(new RegExp( "\\r", "g" ), "").split("\n");
 

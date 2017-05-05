@@ -1,6 +1,7 @@
 var React = require('react');
 var fetch = require('node-fetch');
 var elasticsearch = require('elasticsearch');
+var jstz = require('jstz');
 
 // Import components
 var MAMain = require('./main');
@@ -28,12 +29,16 @@ var MAMainCont = React.createClass({
     if ( file != null ) {
       if (file.size > 0 && file.type.match('text/*')) {
         var self = this;
+        const tmz = jstz.determine().name();
         var reader = new FileReader();
         reader.onload = function (upload) {
           var dataURL = upload.target.result;
           try {
             var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0];
             if (mimeType.search("VCALENDAR") != -1) {
+              // Append browser timezone to file in case API doesn't recognize the ics TZID
+              // CharCode 13 is '\n' and 10 is '\r'
+              dataURL = "BROWTZID:" + tmz + String.fromCharCode(13, 10) + dataURL;
               fetch(self.props.docURL + 'api/ics', {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
