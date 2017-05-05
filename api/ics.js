@@ -55,9 +55,10 @@ exports.icsParse = function (icsData) {
             default:
               val = calArray[i].split(';');
               if ( val[0] == "ORGANIZER" ) {
+                var orgArray = val[1].split(':');
                 meeting.organizer = {
-                  cn: val[1].split(':')[0].replace("CN=",""),
-                  mail: val[1].split(':')[2] // ignore mailto
+                  cn: orgArray[orgArray.findIndex(function(token){return token.startsWith("CN=");})].replace("CN=","").replace(new RegExp("\"", "g"),""),
+                  mail: orgArray[orgArray.indexOf("mailto")+1]
                 }
               } else if ( val[0] == "ATTENDEE" ) {
                   var attendee = {
@@ -66,13 +67,17 @@ exports.icsParse = function (icsData) {
                     accept: "",
                     mail: ""
                   }
+                  // By default, role is REQ-PARTICIPANT unless stated otherwise
+                  attendee.role = "REQ-PARTICIPANT";
                   for (var j=0;j< val.length;j++) {
                     var pair = val[j].split("=");
                     if ( pair[0] == "ROLE" ) { attendee.role = pair[1]; }
                     else if ( pair[0] == "PARTSTAT") { attendee.accept = pair[1]; }
-                    else if ( pair[0] == "CN" ) { attendee.name = pair[1]; }
-                    else if ( pair[0] == "X-NUM-GUESTS") { attendee.mail = pair[1].split(':')[2]; }
+                    else if ( pair[0] == "CN" ) { attendee.name = pair[1].replace(new RegExp("\"", "g"),""); }
                   }
+                  var orgArray = calArray[i].split(':');
+                  attendee.mail = orgArray[orgArray.indexOf("mailto")+1];
+
                   meeting.attendees[a] = attendee;
                   a++;
               }
