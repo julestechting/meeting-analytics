@@ -15,7 +15,8 @@ var MACentralStat = React.createClass({
     return {
       targetUser: null,
       scoreAttendance: null,
-      scoreAccept: null
+      scoreAccept: null,
+      scoreAnswer: null
     };
   },
 
@@ -92,6 +93,11 @@ var MACentralStat = React.createClass({
     this.setState({scoreAccept: AccSc});
   },
 
+  displayAnswerScore: function (score) {
+    const AnsSc = ( <div>Meeting Request Answer Score = {score}</div> );
+    this.setState({scoreAnswer: AnsSc});
+  },
+
   displayStats: function () {
     return (
       <div>
@@ -100,6 +106,7 @@ var MACentralStat = React.createClass({
         <div>Email: {this.state.targetUser.mail}</div>
         {this.state.scoreAttendance || this.props.getStatsWithCallback("AttSc", this.state.targetUser.mail, this.displayAttendanceScore)}
         {this.state.scoreAccept || this.props.getStatsWithCallback("AccSc", this.state.targetUser.mail, this.displayAcceptScore)}
+        {this.state.scoreAnswer || this.props.getStatsWithCallback("AnsSc", this.state.targetUser.mail, this.displayAnswerScore)}
       </div>
     );
   },

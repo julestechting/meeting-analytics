@@ -211,7 +211,7 @@ var MAMainCont = React.createClass({
     switch (statType) {
       case "AttSc":
         reqBody.aggs = {
-          AttSc: {
+          score: {
             filter: {
 				      terms: { status: ["AOT", "AL"] }
 			      }
@@ -220,7 +220,16 @@ var MAMainCont = React.createClass({
         break;
       case "AccSc":
         reqBody.aggs = {
-          NoAccSc: {
+          score: {
+            filter: {
+              terms: { accept: ["ACCEPTED"] }
+            }
+          }
+        };
+        break;
+      case "AnsSc":
+        reqBody.aggs = {
+          oppScore: {
             filter: {
               terms: { accept: ["NEEDS-ACTION", ""] }
             }
@@ -239,10 +248,11 @@ var MAMainCont = React.createClass({
         if ( !err ) {
           switch (statType) {
             case "AttSc":
-              statCallback(res.aggregations.AttSc.doc_count / res.hits.total);
-              break;
             case "AccSc":
-              statCallback(1 - (res.aggregations.NoAccSc.doc_count / res.hits.total));
+              statCallback(((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0) + '%');
+              break;
+            case "AnsSc":
+              statCallback(((1 - (res.aggregations.oppScore.doc_count / res.hits.total))*100).toFixed(0) + '%');
               break;
             default:
               // Do nothing
