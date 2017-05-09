@@ -15,6 +15,7 @@ var MACentralStat = React.createClass({
     return {
       targetUser: null,
       scoreAttendance: null,
+      scoreAttendancePerDay: null,
       scoreAccept: null,
       scoreAnswer: null
     };
@@ -78,7 +79,7 @@ var MACentralStat = React.createClass({
   },
 
   resetUser: function (event) {
-    this.setState({targetUser: null, scoreAttendance: null, scoreAccept: null});
+    this.setState({targetUser: null, scoreAttendance: null, scoreAttendancePerDay: null, scoreAccept: null, scoreAnswer: null});
     // Reset searchResults
     this.props.searchUser("", 0);
   },
@@ -86,6 +87,29 @@ var MACentralStat = React.createClass({
   displayAttendanceScore: function (score) {
     const AttSc = ( <div>Attendance Score = {score}</div> );
     this.setState({scoreAttendance: AttSc});
+  },
+
+  displayAttendanceScorePerDay: function (scoreArray) {
+    const daysOW = [
+      {day: "Monday", score: scoreArray[0]},
+      {day: "Tuesday", score: scoreArray[1]},
+      {day: "Wednesday", score: scoreArray[2]},
+      {day: "Thursday", score: scoreArray[3]},
+      {day: "Friday", score: scoreArray[4]},
+      {day: "Saturday", score: scoreArray[5]},
+      {day: "Sunday", score: scoreArray[6]}
+    ];
+    const AttScPD = (
+      <div>
+        Attendance Score Per Day of the Week
+        <ul>
+          {daysOW.map(function (dayScore) {
+            return (<li key={dayScore.day}>{dayScore.day}: {dayScore.score}</li>);
+          })}
+        </ul>
+      </div>
+    );
+    this.setState({scoreAttendancePerDay: AttScPD});
   },
 
   displayAcceptScore: function (score) {
@@ -105,6 +129,7 @@ var MACentralStat = React.createClass({
         <div>Name: {this.state.targetUser.name}</div>
         <div>Email: {this.state.targetUser.mail}</div>
         {this.state.scoreAttendance || this.props.getStatsWithCallback("AttSc", this.state.targetUser.mail, this.displayAttendanceScore)}
+        {this.state.scoreAttendancePerDay || this.props.getStatsWithCallback("AttScPD", this.state.targetUser.mail, this.displayAttendanceScorePerDay)}
         {this.state.scoreAccept || this.props.getStatsWithCallback("AccSc", this.state.targetUser.mail, this.displayAcceptScore)}
         {this.state.scoreAnswer || this.props.getStatsWithCallback("AnsSc", this.state.targetUser.mail, this.displayAnswerScore)}
       </div>

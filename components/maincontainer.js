@@ -227,6 +227,19 @@ var MAMainCont = React.createClass({
           }
         };
         break;
+      case "AttScPD":
+        reqBody.aggs = {
+          scorePD: {
+            terms: {
+              script: {
+  					    lang: "painless",
+  					    inline: "doc['start'].date.dayOfWeek",
+  					    params: {}
+              }
+				    }
+          }
+        };
+        break;
       case "AnsSc":
         reqBody.aggs = {
           oppScore: {
@@ -253,6 +266,15 @@ var MAMainCont = React.createClass({
               break;
             case "AnsSc":
               statCallback(((1 - (res.aggregations.oppScore.doc_count / res.hits.total))*100).toFixed(0) + '%');
+              break;
+            case "AttScPD":
+              var scorePD = ["No Data", "No Data", "No Data", "No Data", "No Data", "No Data", "No Data"];
+              res.aggregations.scorePD.buckets.map(function(bucket) {
+                const day = parseInt(bucket.key);
+                // day-1 is because Monday is "1" and array starts at 0
+                if ( day > 0 ) { scorePD[day-1] = (((bucket.doc_count/ res.hits.total)*100).toFixed(0) + '%'); }
+              });
+              statCallback(scorePD);
               break;
             default:
               // Do nothing
