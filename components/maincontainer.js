@@ -222,7 +222,7 @@ var MAMainCont = React.createClass({
         reqBody.aggs = {
           NoAccSc: {
             filter: {
-              terms: { accept: ["NEEDS-ACTION"] }
+              terms: { accept: ["NEEDS-ACTION", ""] }
             }
           }
         };
