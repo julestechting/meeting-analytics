@@ -224,6 +224,11 @@ var MAMainCont = React.createClass({
             filter: {
               terms: { accept: ["ACCEPTED"] }
             }
+          },
+          void: {
+            filter: {
+              terms: { accept: [""] }
+            }
           }
         };
         break;
@@ -244,7 +249,12 @@ var MAMainCont = React.createClass({
         reqBody.aggs = {
           oppScore: {
             filter: {
-              terms: { accept: ["NEEDS-ACTION", ""] }
+              terms: { accept: ["NEEDS-ACTION"] }
+            }
+          },
+          void: {
+            filter: {
+              terms: { accept: [""] }
             }
           }
         };
@@ -259,13 +269,26 @@ var MAMainCont = React.createClass({
       body: reqBody},
       function (err, res, status) {
         if ( !err ) {
+          var validAccept = 0;
           switch (statType) {
             case "AttSc":
-            case "AccSc":
               statCallback(((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0) + '%');
               break;
+            case "AccSc":
+              validAccept = res.hits.total - res.aggregations.void.doc_count;
+              if ( validAccept > 0 ) {
+                statCallback(((res.aggregations.score.doc_count / validAccept)*100).toFixed(0) + '%');
+              } else {
+                statCallback("No Data");
+              }
+              break;
             case "AnsSc":
-              statCallback(((1 - (res.aggregations.oppScore.doc_count / res.hits.total))*100).toFixed(0) + '%');
+              validAccept = res.hits.total - res.aggregations.void.doc_count;
+              if ( validAccept > 0 ) {
+                  statCallback(((1 - (res.aggregations.oppScore.doc_count / validAccept))*100).toFixed(0) + '%');
+              } else {
+                statCallback("No Data");
+              }
               break;
             case "AttScPD":
               var scorePD = ["No Data", "No Data", "No Data", "No Data", "No Data", "No Data", "No Data"];
