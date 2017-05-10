@@ -225,28 +225,6 @@ var MAMainCont = React.createClass({
               terms: { accept: ["ACCEPTED"] }
             }
           },
-          void: {
-            filter: {
-              terms: { accept: [""] }
-            }
-          }
-        };
-        break;
-      case "AttScPD":
-        reqBody.aggs = {
-          scorePD: {
-            terms: {
-              script: {
-  					    lang: "painless",
-  					    inline: "doc['start'].date.dayOfWeek",
-  					    params: {}
-              }
-				    }
-          }
-        };
-        break;
-      case "AnsSc":
-        reqBody.aggs = {
           oppScore: {
             filter: {
               terms: { accept: ["NEEDS-ACTION"] }
@@ -256,6 +234,20 @@ var MAMainCont = React.createClass({
             filter: {
               terms: { accept: [""] }
             }
+          }
+        };
+        break;
+      case "AttScPD":
+        // TODO wrong calculation to rework
+        reqBody.aggs = {
+          scorePD: {
+            terms: {
+              script: {
+  					    lang: "painless",
+  					    inline: "doc['start'].date.dayOfWeek",
+  					    params: {}
+              }
+				    }
           }
         };
         break;
@@ -277,17 +269,13 @@ var MAMainCont = React.createClass({
             case "AccSc":
               validAccept = res.hits.total - res.aggregations.void.doc_count;
               if ( validAccept > 0 ) {
-                statCallback(((res.aggregations.score.doc_count / validAccept)*100).toFixed(0) + '%');
+                const scoreArray = [
+                  ((res.aggregations.score.doc_count / validAccept)*100).toFixed(0) + '%',
+                  ((1 - (res.aggregations.oppScore.doc_count / validAccept))*100).toFixed(0) + '%'
+                ];
+                statCallback(scoreArray);
               } else {
-                statCallback("No Data");
-              }
-              break;
-            case "AnsSc":
-              validAccept = res.hits.total - res.aggregations.void.doc_count;
-              if ( validAccept > 0 ) {
-                  statCallback(((1 - (res.aggregations.oppScore.doc_count / validAccept))*100).toFixed(0) + '%');
-              } else {
-                statCallback("No Data");
+                statCallback(["No Data", "No Data"]);
               }
               break;
             case "AttScPD":
