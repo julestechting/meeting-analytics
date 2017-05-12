@@ -32,7 +32,8 @@ export const eIndices = [
               "fields": {
                 "ngram": {
                   "type": "text",
-                  "analyzer": "ngram-analyzer"
+                  "analyzer": "ngram-analyzer",
+                  "search_analyzer": "whitespace"
                 }
               }
             },
@@ -41,7 +42,8 @@ export const eIndices = [
               "fields": {
                 "ngram": {
                   "type": "text",
-                  "analyzer": "ngram-analyzer"
+                  "analyzer": "ngram-analyzer",
+                  "search_analyzer": "whitespace"
                 }
               }
             },
