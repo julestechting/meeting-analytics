@@ -1,5 +1,8 @@
 var React = require('react');
 
+// Import components
+var MAAutoComplete = require('./autocomplete');
+
 var MACentralStat = React.createClass({
 
   propTypes: {
@@ -72,7 +75,7 @@ var MACentralStat = React.createClass({
             <input type="Submit" value="Submit" />
           </label>
         </form>
-        {this.displayResults()}
+        <MAAutoComplete searchResults={this.props.searchResults} buttonCallback={this.selectUser} />
       </div>
     );
   },

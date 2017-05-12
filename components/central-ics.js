@@ -1,10 +1,14 @@
 var React = require('react');
 
+// Import components
+var MAAutoComplete = require('./autocomplete');
+
 var MACentralIcs = React.createClass({
 
   propTypes: {
     sendMeetingInfo: React.PropTypes.func.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
+    injectMeetingList: React.PropTypes.func.isRequired,
     meetingList: React.PropTypes.array.isRequired,
     searchResults: React.PropTypes.array.isRequired,
     searchUser: React.PropTypes.func.isRequired
@@ -68,23 +72,6 @@ var MACentralIcs = React.createClass({
     this.props.searchUser(event.target.value, 5);
   },
 
-  displayResults: function () {
-    if ( this.props.searchResults.length > 0 ) {
-      var self = this;
-      return (
-        <ul>
-          {self.props.searchResults.map(function (hit) {
-            const str = hit._source.attendeeName + " (" + hit._source.attendeeMail + ")";
-            const val = JSON.stringify({name: hit._source.attendeeName, mail: hit._source.attendeeMail});
-            return (
-              <li><button value={val} onClick={self.injectUser}>{str}</button></li>
-            );
-          })}
-        </ul>
-      );
-    }
-  },
-
   displayChoice: function (idx, numDisplayStr) {
     var idxStr = idx.toString();
     var name = numDisplayStr + "-" + idxStr;
@@ -131,7 +118,7 @@ var MACentralIcs = React.createClass({
               <input type="submit" value="Submit"/>
             </form>
           }
-          {self.props.searchResults && this.displayResults()}
+          <MAAutoComplete searchResults={this.props.searchResults} buttonCallback={this.injectUser} />
           <button name="addline" onClick={this.handleNewLine}>{this.state.addLineValue}</button>
         </div>
       );
