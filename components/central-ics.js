@@ -5,12 +5,15 @@ var MACentralIcs = React.createClass({
   propTypes: {
     sendMeetingInfo: React.PropTypes.func.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
-    meetingList: React.PropTypes.array.isRequired
+    meetingList: React.PropTypes.array.isRequired,
+    searchResults: React.PropTypes.array.isRequired,
+    searchUser: React.PropTypes.func.isRequired
   },
 
   getInitialState: function () {
     return {
-      numDisplay: -1
+      numDisplay: -1,
+      addLineValue: "Add"
     };
   },
 
@@ -22,6 +25,64 @@ var MACentralIcs = React.createClass({
     var attendStatus = event.target.value;
     var indices = event.target.name.split("-");
     this.props.sendMeetingInfo(this.props.meetingList[indices[0]], indices[1], attendStatus);
+  },
+
+  resetNewLine: function() {
+    this.setState({addLineValue: "Add"});
+    this.props.searchUser("", 0);
+  },
+
+  handleNewLine: function (event) {
+    if ( this.state.addLineValue == "Add" ) {
+      this.setState({addLineValue: "Close"});
+    } else {
+      this.resetNewLine();
+    }
+  },
+
+  addUser: function (uName, uMail) {
+    const newAttendee = {
+      name: uName,
+      mail: uMail,
+      role: "OPT-PARTICIPANT",
+      accept: ""
+    };
+    this.props.injectMeetingList(this.state.numDisplay, newAttendee);
+    this.resetNewLine();
+  },
+
+  handleSubmitNewLine: function (event) {
+    event.preventDefault();
+    const name = event.target[0].value;
+    const mail = event.target[1].value;
+    this.addUser(name, mail);
+  },
+
+  injectUser: function (event) {
+    const targetUser = JSON.parse(event.target.value);
+    // Add an attendee to the meeting
+    this.addUser(targetUser.name, targetUser.mail);
+  },
+
+  handleAutoComplete: function (event) {
+    this.props.searchUser(event.target.value, 5);
+  },
+
+  displayResults: function () {
+    if ( this.props.searchResults.length > 0 ) {
+      var self = this;
+      return (
+        <ul>
+          {self.props.searchResults.map(function (hit) {
+            const str = hit._source.attendeeName + " (" + hit._source.attendeeMail + ")";
+            const val = JSON.stringify({name: hit._source.attendeeName, mail: hit._source.attendeeMail});
+            return (
+              <li><button value={val} onClick={self.injectUser}>{str}</button></li>
+            );
+          })}
+        </ul>
+      );
+    }
   },
 
   displayChoice: function (idx, numDisplayStr) {
@@ -48,20 +109,31 @@ var MACentralIcs = React.createClass({
       };
       // Generate result
       return (
-        <ul>
-          <li key={prefix+"0"}>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
-          <li key={prefix+"1"}>Subject: {meeting.summary}</li>
-          <li key={prefix+"2"}>Date: {getLocalDate(meeting.dateStart)}</li>
-          <li key={prefix+"3"}>Location: {meeting.location}</li>
-          {meeting.attendees.map(function (attendee, idx) {
-            var key = prefix + new String(4 + idx);
-            return (
-              <li key={key}>
-                {attendee.role == "OPT-PARTICIPANT" && <i>(Optional)</i>} Attendee: {attendee.name} ({attendee.mail})
-                {self.displayChoice(idx, self.state.numDisplay.toString())}
-              </li>);
-          })}
-        </ul>
+        <div>
+          <ul>
+            <li key={prefix+"0"}>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
+            <li key={prefix+"1"}>Subject: {meeting.summary}</li>
+            <li key={prefix+"2"}>Date: {getLocalDate(meeting.dateStart)}</li>
+            <li key={prefix+"3"}>Location: {meeting.location}</li>
+            {meeting.attendees.map(function (attendee, idx) {
+              var key = prefix + new String(4 + idx);
+              return (
+                <li key={key}>
+                  {attendee.role == "OPT-PARTICIPANT" && <i>(Optional)</i>} Attendee: {attendee.name} ({attendee.mail})
+                  {self.displayChoice(idx, self.state.numDisplay.toString())}
+                </li>);
+            })}
+          </ul>
+          {self.state.addLineValue == "Close" &&
+            <form onSubmit={this.handleSubmitNewLine}>
+              <label>Name: <input type="text" name="newLineName" onChange={self.handleAutoComplete} required/></label>
+              <label>Email: <input type="email" name="newLineMail" onChange={self.handleAutoComplete} required/></label>
+              <input type="submit" value="Submit"/>
+            </form>
+          }
+          {self.props.searchResults && this.displayResults()}
+          <button name="addline" onClick={this.handleNewLine}>{this.state.addLineValue}</button>
+        </div>
       );
     } else {
       return null;

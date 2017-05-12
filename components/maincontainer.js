@@ -63,6 +63,14 @@ var MAMainCont = React.createClass({
     }
   },
 
+  injectMeetingList: function (idx, attendee) {
+    var mList = this.state.meetingList;
+    if ( mList && idx >= 0 && idx < mList.length ) {
+      mList[idx].attendees.push(attendee);
+      this.setState({meetingList: mList});
+    }
+  },
+
   sendMeetingInfo: function (meeting, attendeeIdx, attendStatus) {
     const owner = this.props.owner;
     const indices = eDefs.eLIndices;
@@ -311,6 +319,7 @@ var MAMainCont = React.createClass({
       <MAMain
         meetingList={this.state.meetingList}
         updateMeetingList={this.updateMeetingList}
+        injectMeetingList={this.injectMeetingList}
         sendMeetingInfo={this.sendMeetingInfo}
         searchResults={this.state.searchResults}
         searchUser={this.searchUser}

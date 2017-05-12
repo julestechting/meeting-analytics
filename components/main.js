@@ -11,6 +11,7 @@ var MAMain = React.createClass({
   propTypes: {
     meetingList: React.PropTypes.array.isRequired,
     updateMeetingList: React.PropTypes.func.isRequired,
+    injectMeetingList: React.PropTypes.func.isRequired,
     sendMeetingInfo: React.PropTypes.func.isRequired,
     searchResults: React.PropTypes.array.isRequired,
     searchRange: React.PropTypes.string,
@@ -41,6 +42,9 @@ var MAMain = React.createClass({
           meetingList={this.props.meetingList}
           sendMeetingInfo={this.props.sendMeetingInfo}
           updateMeetingList={this.props.updateMeetingList}
+          injectMeetingList={this.props.injectMeetingList}
+          searchResults={this.props.searchResults}
+          searchUser={this.props.searchUser}
         />);
     } else if (centralPanel == 1) {
       centralDisplay = (
