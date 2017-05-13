@@ -23,6 +23,7 @@ var MACentralIcs = React.createClass({
 
   componentWillUnmount: function () {
     this.props.updateMeetingList(null);
+    this.props.searchUser("", 0);
   },
 
   handleChoice: function (event) {
