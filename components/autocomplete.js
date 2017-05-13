@@ -4,7 +4,7 @@ var MAAutoComplete = React.createClass({
 
   propTypes: {
     buttonCallback: React.PropTypes.array.isRequired,
-    searchResults: React.PropTypes.array.isRequired
+    searchResults: React.PropTypes.func.isRequired
   },
 
   render: function () {
@@ -13,9 +13,9 @@ var MAAutoComplete = React.createClass({
       var self = this;
       return (
         <ul>
-          {self.props.searchResults.map(function (hit) {
-            const str = hit._source.attendeeName + " (" + hit._source.attendeeMail + ")";
-            const val = JSON.stringify({name: hit._source.attendeeName, mail: hit._source.attendeeMail});
+          {self.props.searchResults.map(function (sUser) {
+            const str = sUser.attendeeName + " (" + sUser.attendeeMail + ")";
+            const val = JSON.stringify({name: sUser.attendeeName, mail: sUser.attendeeMail});
             return (
               <li><button value={val} onClick={self.props.buttonCallback}>{str}</button></li>
             );

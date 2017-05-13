@@ -155,12 +155,18 @@ var MAMainCont = React.createClass({
             ],
             minimum_should_match: 1
           }
+        },
+        collapse: {
+          field: "attendeeMail"
         }
       }},
       function (err, res, status) {
         if ( !err ) {
-          // TODO should we find a way to return unique values?
-          self.setState({searchResults: res.hits.hits});
+          var resArray = [];
+          res.hits.hits.map(function (hit) {
+            resArray.push({attendeeName: hit._source.attendeeName, attendeeMail: hit.fields.attendeeMail[0]});
+          });
+          self.setState({searchResults: resArray});
         } else {
           // Should probably notify of the error
         }
