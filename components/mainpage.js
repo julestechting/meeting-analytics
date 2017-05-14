@@ -73,7 +73,7 @@ var MainPage = React.createClass({
         <div>
           <form>
             <input type="button" name="close" value="Close" onClick={this.handleUpdateParams}/><br/>
-            <label>Search range:
+            <label>Global search range:
               <input type="number" name="defaultDuration" min="0" value={this.props.currentParams.defaultDuration} onChange={this.handleUpdateParams}/>
               <select name="defaultDurationUnit" value={this.props.currentParams.defaultDurationUnit} onChange={this.handleUpdateParams}>
                 <option value="H">Hour</option>
