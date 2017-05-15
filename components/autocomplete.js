@@ -3,8 +3,8 @@ var React = require('react');
 var MAAutoComplete = React.createClass({
 
   propTypes: {
-    buttonCallback: React.PropTypes.array.isRequired,
-    searchResults: React.PropTypes.func.isRequired
+    buttonCallback: React.PropTypes.func.isRequired,
+    searchResults: React.PropTypes.array.isRequired
   },
 
   render: function () {
