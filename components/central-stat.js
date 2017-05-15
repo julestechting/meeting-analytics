@@ -65,6 +65,8 @@ var MACentralStat = React.createClass({
     this.setState({targetUser: null, scoreAttendance: null, scoreAttendancePerDay: null, scoreAccept: null, scoreAnswer: null});
     // Reset searchResults
     this.props.searchUser("", 0);
+    // Reload searchRange
+    this.props.loadCurrentSearchRange();
   },
 
   displayAttendanceScore: function (score) {
