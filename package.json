@@ -1,6 +1,6 @@
 {
   "name": "meeting-analytics",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Analytics on meetings and events attendance",
   "main": "server.js",
   "scripts": {

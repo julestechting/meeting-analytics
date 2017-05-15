@@ -4,7 +4,7 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   api = require('./api/api');
 
-app.use(bodyParser.text());
+app.use(bodyParser.text({limit: '50mb'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', api);
