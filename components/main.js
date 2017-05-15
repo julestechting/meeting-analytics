@@ -70,7 +70,6 @@ var MAMain = React.createClass({
           <ul>
             <li><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></li>
             <li><MAUserStat updateCentralPanel={this.updateCentralPanel}/></li>
-            <li>Icon3</li>
           </ul>
           {centralDisplay}
         </div>
