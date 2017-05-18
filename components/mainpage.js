@@ -107,16 +107,16 @@ var MainPage = React.createClass({
         );
       } else {
         main = (
-          <div>
-            <p>Please provide the Elasticsearch connection settings</p>
-            <form onSubmit={this.handleESubmit}>
-              <label>Host:
-                <input type="text" name="host" onChange={this.handleUpdateEClient} required/>
+          <div className="w3-margin w3-padding w3-topbar w3-bottombar w3-border-cyan">
+            <div>Please update the Elasticsearch connection settings</div>
+            <form className="w3-form" onSubmit={this.handleESubmit}>
+              <label>Host
+                <input type="text" name="host" onChange={this.handleUpdateEClient} required className="w3-input w3-border"/>
               </label>
-              <label>Port:
-                <input type="number" name="port" min="1" onChange={this.handleUpdateEClient} required/>
+              <label>Port
+                <input type="number" name="port" min="1" onChange={this.handleUpdateEClient} required className="w3-input w3-border"/>
               </label>
-              <input type="submit" name="submit" value="Submit"/>
+              <input type="submit" name="submit" value="Submit" className="w3-input w3-section w3-orange"/>
             </form>
           </div>
         );
@@ -124,7 +124,7 @@ var MainPage = React.createClass({
 
       return (
         <div>
-          <MAHeader title={this.state.title} switchOpenParam={this.switchOpenParam}/>
+          <MAHeader title={this.state.title} switchOpenParam={this.switchOpenParam} eValidate={this.props.eValidate}/>
           {this.state.openParam && this.props.currentParams && this.displayParam()}
           {main}
           {!this.props.hideFooter && <MAFooter/>}

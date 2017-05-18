@@ -3,21 +3,21 @@ var React = require('react');
 var MAFooter = React.createClass({
 
     render: function () {
-        var logoStyle = {
-          transform: 'scale(0.6,0.6)',
-          'vertical-align': 'middle',
-        };
 
-        return (
-            <footer className="w3-container w3-black w3-tiny">
-                <img src="img/logo.png" className="w3-circle w3-show-inline-block" style={logoStyle} alt="Logo" />
-                <div className="w3-show-inline-block">
+      return (
+          <footer className="w3-container w3-orange w3-tiny w3-display-bottommiddle w3-block">
+            <table className="w3-responsive">
+              <tr>
+                <td className="w3-padding-0"><img src="img/logo.png" className="w3-circle" alt="Logo" /></td>
+                <td className="w3-padding-0">
                   <span>Powered by </span>
                   <a href="mailto:julestechconsulting@gmail.com">Jules Tech Consulting Inc.</a>
                   <span> @2016</span>
-                </div>
-            </footer>
-        );
+                </td>
+              </tr>
+            </table>
+          </footer>
+      );
     }
 });
 
