@@ -5,7 +5,7 @@ var MAFooter = React.createClass({
     render: function () {
 
       return (
-          <footer className="w3-container w3-orange w3-tiny w3-display-bottommiddle w3-block">
+          <footer className="w3-container w3-hide-small w3-orange w3-tiny w3-display-bottommiddle w3-block">
             <table className="w3-responsive">
               <tr>
                 <td className="w3-padding-0"><img src="img/logo.png" className="w3-circle" alt="Logo" /></td>
