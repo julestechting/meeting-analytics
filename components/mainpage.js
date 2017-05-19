@@ -70,27 +70,37 @@ var MainPage = React.createClass({
 
     displayParam: function () {
       const buttonStyle = {
-        width: '80px'
+        width: '50px'
       };
 
       return (
-        <div className="w3-row w3-margin w3-padding w3-topbar w3-bottombar w3-border-orange">
-          <button name="close" onClick={this.handleUpdateParams} className="w3-col w3-left w3-padding-small w3-button w3-white w3-hover-white" style={buttonStyle}><img src="img/closebtn.png"/></button>
+        <div className="w3-row w3-margin w3-padding-16 w3-topbar w3-bottombar w3-border-orange">
+          <button name="close" onClick={this.handleUpdateParams} className="w3-col w3-left w3-hide-small w3-padding-small w3-button w3-white w3-hover-white" style={buttonStyle}><img src="img/closebtn.png"/></button>
           <div className="w3-rest w3-container w3-padding-small">
             <h4>Parameters</h4>
-            <label>Global search range:
-              <input type="number" name="defaultDuration" min="0" value={this.props.currentParams.defaultDuration} onChange={this.handleUpdateParams} className="w3-input w3-border"/>
-              <select name="defaultDurationUnit" value={this.props.currentParams.defaultDurationUnit} onChange={this.handleUpdateParams} className="w3-select">
-                <option value="H">Hour</option>
-                <option value="d">Day</option>
-                <option value="w">Week</option>
-                <option value="M">Month</option>
-                <option value="y">Year</option>
-              </select>
-            </label>
-            <label>Hide credits in the footer
-              <input type="checkbox" name="hideFooter" checked={this.props.currentParams.hideFooter} onChange={this.handleUpdateParams} className="w3-check"/>
-            </label>
+            <table className="w3-table w3-striped w3-reponsive">
+              <tr>
+                <td>Global search range:</td>
+                <td>
+                  <input type="number" name="defaultDuration" min="0" value={this.props.currentParams.defaultDuration} onChange={this.handleUpdateParams} className="w3-input w3-border"/>
+                </td>
+                <td>
+                  <select name="defaultDurationUnit" value={this.props.currentParams.defaultDurationUnit} onChange={this.handleUpdateParams} className="w3-select">
+                    <option value="H">Hour</option>
+                    <option value="d">Day</option>
+                    <option value="w">Week</option>
+                    <option value="M">Month</option>
+                    <option value="y">Year</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Hide credits in the footer</td>
+                <td>
+                  <input type="checkbox" name="hideFooter" checked={this.props.currentParams.hideFooter} onChange={this.handleUpdateParams} className="w3-check"/>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       );
