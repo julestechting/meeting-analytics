@@ -73,7 +73,7 @@ var MAMain = React.createClass({
             <div className="w3-bar-item w3-border w3-border-white w3-hover-border-orange"><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></div>
             <div className="w3-bar-item w3-border w3-border-white w3-hover-border-orange"><MAUserStat updateCentralPanel={this.updateCentralPanel}/></div>
           </div>
-          <div className="w3-rest w3-container">
+          <div className="w3-rest">
             {centralDisplay}
           </div>
         </div>
