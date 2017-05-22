@@ -33,6 +33,8 @@ var MAMain = React.createClass({
 
   render: function () {
 
+    const barStyle = { width: '92px' };
+
     const centralPanel = this.state.centralPanel;
     let centralDisplay = null;
 
@@ -66,12 +68,14 @@ var MAMain = React.createClass({
     }
 
     return (
-        <div>
-          <ul>
-            <li><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></li>
-            <li><MAUserStat updateCentralPanel={this.updateCentralPanel}/></li>
-          </ul>
-          {centralDisplay}
+        <div className="w3-container w3-padding-16 w3-row">
+          <div className="w3-col w3-bar-block" style={barStyle}>
+            <div className="w3-bar-item w3-border w3-border-white w3-hover-border-orange"><MAIcsForm updateMeetingList={this.props.updateMeetingList} updateCentralPanel={this.updateCentralPanel}/></div>
+            <div className="w3-bar-item w3-border w3-border-white w3-hover-border-orange"><MAUserStat updateCentralPanel={this.updateCentralPanel}/></div>
+          </div>
+          <div className="w3-rest w3-container">
+            {centralDisplay}
+          </div>
         </div>
     );
   }
