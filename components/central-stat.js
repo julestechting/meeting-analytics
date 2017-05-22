@@ -95,11 +95,18 @@ var MACentralStat = React.createClass({
     const AttScPD = (
       <div className="w3-padding">
         <strong>Attendance Score Per Day of the Week</strong>
-        <ul className="w3-ul">
-          {daysOW.map(function (dayScore) {
-            return (<li key={dayScore.day}>{dayScore.day}: {dayScore.score}</li>);
-          })}
-        </ul>
+        <table className="w3-table w3-border w3-border-cyan w3-bordered w3-responsive">
+          <tbody>
+            {daysOW.map(function (dayScore) {
+              return (
+                <tr>
+                  <td className="w3-cyan w3-text-white">{dayScore.day}:</td>
+                  <td>{dayScore.score}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     );
     this.setState({scoreAttendancePerDay: AttScPD});
