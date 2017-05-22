@@ -50,7 +50,7 @@ var MACentralStat = React.createClass({
   displaySearch: function () {
     return (
       <div>
-        <form onSubmit={this.handleSearch} className="w3-container w3-bar w3-responsive">
+        <form onSubmit={this.handleSearch} className="w3-bar w3-responsive">
           <span className="w3-bar-item">Search name:</span>
           <input type="search" list="usersList" name="nameSearch" onChange={this.handleAutoComplete} className="w3-bar-item w3-input w3-border w3-border-cyan w3-hover-border-orange"/>
           <input type="Submit" value="Submit" className="w3-bar-item w3-margin-left w3-button w3-text-white w3-cyan w3-hover-text-white w3-hover-orange"/>
@@ -109,7 +109,7 @@ var MACentralStat = React.createClass({
   displayStats: function () {
     return (
       <div>
-        <div><button value="clear" onClick={this.resetUser}>Clear selection</button></div>
+        <div><button value="clear" onClick={this.resetUser} className="w3-button w3-text-white w3-cyan w3-hover-text-white w3-hover-orange">Clear selection</button></div>
         <div>Name: {this.state.targetUser.name}</div>
         <div>Email: {this.state.targetUser.mail}</div>
         {this.state.scoreAttendance || this.props.getStatsWithCallback("AttSc", this.state.targetUser.mail, this.displayAttendanceScore)}
@@ -121,7 +121,7 @@ var MACentralStat = React.createClass({
 
   render: function () {
     return (
-      <div>{this.state.targetUser ? this.displayStats() : this.displaySearch()}</div>
+      <div className="w3-container">{this.state.targetUser ? this.displayStats() : this.displaySearch()}</div>
     );
   }
 });
