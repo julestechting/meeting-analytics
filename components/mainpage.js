@@ -75,7 +75,7 @@ var MainPage = React.createClass({
 
       return (
         <div className="w3-row w3-margin w3-padding-16 w3-topbar w3-bottombar w3-border-orange">
-          <button name="close" onClick={this.handleUpdateParams} className="w3-col w3-left w3-hide-small w3-padding-small w3-button w3-white w3-hover-white" style={buttonStyle}><img src="img/closebtn.png"/></button>
+          <button name="close" onClick={this.handleUpdateParams} className="w3-col w3-left w3-hide-small w3-padding-small w3-button w3-white w3-border w3-border-white w3-hover-white w3-hover-border-orange" style={buttonStyle}><img src="img/closebtn.png"/></button>
           <div className="w3-rest w3-container w3-padding-small">
             <h4>Parameters</h4>
             <table className="w3-table w3-striped w3-reponsive">
