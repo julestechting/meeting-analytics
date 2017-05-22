@@ -69,9 +69,7 @@ var MainPage = React.createClass({
     },
 
     displayParam: function () {
-      const buttonStyle = {
-        width: '50px'
-      };
+      const buttonStyle = { width: '50px' };
 
       return (
         <div className="w3-row w3-margin w3-padding-16 w3-topbar w3-bottombar w3-border-orange">
