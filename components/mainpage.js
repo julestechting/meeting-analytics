@@ -122,7 +122,7 @@ var MainPage = React.createClass({
         main = (
           <div className="w3-margin w3-padding w3-topbar w3-bottombar w3-border-cyan">
             <div>Please update the Elasticsearch connection settings</div>
-            <form className="w3-form" onSubmit={this.handleESubmit}>
+            <form className="w3-container" onSubmit={this.handleESubmit}>
               <label>Host
                 <input type="text" name="host" onChange={this.handleUpdateEClient} required className="w3-input w3-border"/>
               </label>
