@@ -23,8 +23,8 @@ var MAHeader = React.createClass({
               <div className="w3-table w3-third">
                 <table className="w3-responsive">
                   <tr>
-                    <td className="w3-hide"><button type="button" className="w3-button w3-blue w3-hover-indigo" disabled={disableBtns}>Login</button></td>
-                    <td><button type="button" onClick={this.handleSettingsButton} className="w3-button w3-blue w3-hover-indigo" disabled={disableBtns}>Preferences</button></td>
+                    <td className="w3-hide"><button type="button" className="w3-button w3-text-white w3-hover-text-white w3-cyan w3-hover-orange w3-border w3-border-orange w3-hover-border-orange w3-round-medium" disabled={disableBtns}>Login</button></td>
+                    <td><button type="button" onClick={this.handleSettingsButton} className="w3-button w3-text-white w3-hover-text-white w3-cyan w3-hover-orange w3-border w3-border-orange w3-hover-border-orange w3-round-medium" disabled={disableBtns}>Preferences</button></td>
                   </tr>
                 </table>
               </div>
