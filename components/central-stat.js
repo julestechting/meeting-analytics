@@ -69,7 +69,16 @@ var MACentralStat = React.createClass({
   },
 
   displayAttendanceScore: function (score) {
-    const AttSc = ( <div>Attendance Score = {score}</div> );
+    const AttSc = (
+      <div className="w3-row-padding">
+        <div className="w3-col s6">
+          <div className="w3-bar-block w3-center w3-border w3-border-cyan">
+            <div className="w3-bar-item w3-cyan w3-text-white"><strong>Attendance</strong></div>
+            <div className="w3-bar-item w3-xlarge">{score}</div>
+          </div>
+        </div>
+      </div>
+    );
     this.setState({scoreAttendance: AttSc});
   },
 
@@ -84,9 +93,9 @@ var MACentralStat = React.createClass({
       {day: "Sunday", score: scoreArray[6]}
     ];
     const AttScPD = (
-      <div>
-        Attendance Score Per Day of the Week
-        <ul>
+      <div className="w3-padding">
+        <strong>Attendance Score Per Day of the Week</strong>
+        <ul className="w3-ul">
           {daysOW.map(function (dayScore) {
             return (<li key={dayScore.day}>{dayScore.day}: {dayScore.score}</li>);
           })}
@@ -98,9 +107,19 @@ var MACentralStat = React.createClass({
 
   displayAcceptScore: function (scoreArray) {
     const AccSc = (
-      <div>
-        <div>Meeting Accept Score = {scoreArray[0]}</div>
-        <div>Meeting Request Answer Score = {scoreArray[1]}</div>
+      <div className="w3-row-padding">
+        <div className="w3-col s6">
+          <div className="w3-bar-block w3-center w3-border w3-border-cyan">
+            <div className="w3-bar-item w3-cyan w3-text-white"><strong>Accept</strong></div>
+            <div className="w3-bar-item w3-xlarge">{scoreArray[0]}</div>
+          </div>
+        </div>
+        <div className="w3-col s6">
+          <div className="w3-bar-block w3-center w3-border w3-border-cyan">
+            <div className="w3-bar-item w3-cyan w3-text-white"><strong>Answer</strong></div>
+            <div className="w3-bar-item w3-xlarge">{scoreArray[1]}</div>
+          </div>
+        </div>
       </div>
     );
     this.setState({scoreAccept: AccSc});
@@ -110,8 +129,7 @@ var MACentralStat = React.createClass({
     return (
       <div>
         <div><button value="clear" onClick={this.resetUser} className="w3-button w3-text-white w3-cyan w3-hover-text-white w3-hover-orange">Clear selection</button></div>
-        <div>Name: {this.state.targetUser.name}</div>
-        <div>Email: {this.state.targetUser.mail}</div>
+        <div className="w3-margin-bottom"><strong className="w3-large">{this.state.targetUser.name} ({this.state.targetUser.mail})</strong></div>
         {this.state.scoreAttendance || this.props.getStatsWithCallback("AttSc", this.state.targetUser.mail, this.displayAttendanceScore)}
         {this.state.scoreAttendancePerDay || this.props.getStatsWithCallback("AttScPD", this.state.targetUser.mail, this.displayAttendanceScorePerDay)}
         {this.state.scoreAccept || this.props.getStatsWithCallback("AccSc", this.state.targetUser.mail, this.displayAcceptScore)}
