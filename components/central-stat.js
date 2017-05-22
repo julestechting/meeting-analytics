@@ -50,11 +50,10 @@ var MACentralStat = React.createClass({
   displaySearch: function () {
     return (
       <div>
-        <form onSubmit={this.handleSearch}>
-          <label>Search name:
-            <input type="search" list="usersList" name="nameSearch" onChange={this.handleAutoComplete}/>
-            <input type="Submit" value="Submit" />
-          </label>
+        <form onSubmit={this.handleSearch} className="w3-container w3-bar w3-responsive">
+          <span className="w3-bar-item">Search name:</span>
+          <input type="search" list="usersList" name="nameSearch" onChange={this.handleAutoComplete} className="w3-bar-item w3-input w3-border w3-border-cyan w3-hover-border-orange"/>
+          <input type="Submit" value="Submit" className="w3-bar-item w3-margin-left w3-button w3-text-white w3-cyan w3-hover-text-white w3-hover-orange"/>
         </form>
         <MAAutoComplete searchResults={this.props.searchResults} buttonCallback={this.selectUser} />
       </div>
