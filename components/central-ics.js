@@ -73,19 +73,6 @@ var MACentralIcs = React.createClass({
     this.props.searchUser(event.target.value, 5);
   },
 
-  displayChoice: function (idx, numDisplayStr) {
-    var idxStr = idx.toString();
-    var name = numDisplayStr + "-" + idxStr;
-    return (
-      <form>
-        <label key={idxStr + "0"}>Attend&On-Time<input type="radio" name={name} value="AOT" onChange={this.handleChoice}/></label>
-        <label key={idxStr + "1"}>Attend&Late<input type="radio" name={name} value="AL" onChange={this.handleChoice}/></label>
-        <label key={idxStr + "2"}>No Attend<input type="radio" name={name} value="NA" onChange={this.handleChoice}/></label>
-        <label key={idxStr + "3"}>No Attend&Delegated<input type="radio" name={name} value="NAD" onChange={this.handleChoice}/></label>
-      </form>
-    );
-  },
-
   displayMeeting: function () {
     if ( this.state.numDisplay > -1 ) {
       const meeting = this.props.meetingList[this.state.numDisplay];
@@ -97,21 +84,31 @@ var MACentralIcs = React.createClass({
       };
       // Generate result
       return (
-        <div>
-          <ul>
+        <div className="w3-margin">
+          <strong className="w3-large">Meeting</strong>
+          <ul className="w3-ul">
             <li key={prefix+"0"}>Organizer: {meeting.organizer.cn} ({meeting.organizer.mail})</li>
             <li key={prefix+"1"}>Subject: {meeting.summary}</li>
             <li key={prefix+"2"}>Date: {getLocalDate(meeting.dateStart)}</li>
             <li key={prefix+"3"}>Location: {meeting.location}</li>
-            {meeting.attendees.map(function (attendee, idx) {
-              var key = prefix + new String(4 + idx);
-              return (
-                <li key={key}>
-                  {attendee.role == "OPT-PARTICIPANT" && <i>(Optional)</i>} Attendee: {attendee.name} ({attendee.mail})
-                  {self.displayChoice(idx, self.state.numDisplay.toString())}
-                </li>);
-            })}
           </ul>
+          <strong className="w3-large">Attendees</strong>
+          <table className="w3-table w3-responsive w3-border w3-border-cyan">
+            <tbody>
+              {meeting.attendees.map(function (attendee, idx) {
+                var name = self.state.numDisplay + "-" + idx;
+                return (
+                  <tr>
+                    <td className="w3-cyan w3-text-white w3-hover-text-white">{attendee.role == "OPT-PARTICIPANT" && <i>(Optional)</i>} {attendee.name} ({attendee.mail})</td>
+                    <td className="w3-hover-orange w3-hover-text-white"><input type="radio" name={name} value="AOT" onChange={self.handleChoice} className="w3-radio"/><label>On-Time</label></td>
+                    <td className="w3-hover-orange w3-hover-text-white"><input type="radio" name={name} value="AL" onChange={self.handleChoice} className="w3-radio"/><label>Late</label></td>
+                    <td className="w3-hover-orange w3-hover-text-white"><input type="radio" name={name} value="NA" onChange={self.handleChoice} className="w3-radio"/><label>No Attend</label></td>
+                    <td className="w3-hover-orange w3-hover-text-white"><input type="radio" name={name} value="NAD" onChange={self.handleChoice} className="w3-radio"/><label>Delegated</label></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
           {self.state.addLineValue == "Close" &&
             <form onSubmit={this.handleSubmitNewLine}>
               <label>Name: <input type="text" name="newLineName" onChange={self.handleAutoComplete} required/></label>
@@ -137,23 +134,15 @@ var MACentralIcs = React.createClass({
     var self = this;
     if ( meetingList.length > 0 ) {
       return (
-        <form>
+        <ul className="w3-ul w3-cyan w3-text-white">
           {meetingList.map(function(meeting, idx) {
-              var key = "ml" + idx.toString();
-              return (
-                <label key={key}>
-                  <input
-                    name="radio"
-                    type="radio"
-                    value={idx}
-                    onChange={self.handleMeetingChanged}
-                  />
-                  {meeting.summary}
-                  <br/>
-                </label>
-              );
+            return (
+              <li value={idx} onClick={self.handleMeetingChanged} className="w3-hover-orange w3-hover-text-white">
+                {meeting.summary}
+              </li>
+            );
           })}
-        </form>
+        </ul>
       );
     } else {
       return null;
