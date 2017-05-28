@@ -229,6 +229,11 @@ var MAMainCont = React.createClass({
             filter: {
 				      terms: { status: ["AOT", "AL"] }
 			      }
+          },
+          late: {
+            filter: {
+              terms: { status: ["AL"] }
+            }
           }
         };
         break;
@@ -284,7 +289,17 @@ var MAMainCont = React.createClass({
           var validAccept = 0;
           switch (statType) {
             case "AttSc":
-              statCallback(((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0) + '%');
+              if ( res.hits.total > 0 ) {
+                const score = ((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0) + '%';
+                var onTime = "No Data"
+                if ( res.aggregations.score.doc_count > 0 ) {
+                  onTime = (((1 - res.aggregations.late.doc_count / res.aggregations.score.doc_count))*100).toFixed(0) + '%';
+                }
+                statCallback(score, onTime, res.hits.total);
+              } else {
+                statCallback("No Data", "No Data", res.hits.total);
+              }
+
               break;
             case "AccSc":
               validAccept = res.hits.total - res.aggregations.void.doc_count;

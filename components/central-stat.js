@@ -68,13 +68,25 @@ var MACentralStat = React.createClass({
     this.props.loadCurrentSearchRange();
   },
 
-  displayAttendanceScore: function (score) {
+  displayAttendanceScore: function (score, onTime, totalHits) {
     const AttSc = (
       <div className="w3-row-padding">
-        <div className="w3-col s6">
+        <div className="w3-col s4">
+          <div className="w3-bar-block w3-center w3-border w3-border-cyan">
+            <div className="w3-bar-item w3-cyan w3-text-white"><strong>Total records</strong></div>
+            <div className="w3-bar-item w3-xlarge">{totalHits}</div>
+          </div>
+        </div>
+        <div className="w3-col s4">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Attendance</strong></div>
             <div className="w3-bar-item w3-xlarge">{score}</div>
+          </div>
+        </div>
+        <div className="w3-col s4">
+          <div className="w3-bar-block w3-center w3-border w3-border-cyan">
+            <div className="w3-bar-item w3-cyan w3-text-white"><strong>On-Time</strong></div>
+            <div className="w3-bar-item w3-xlarge">{onTime}</div>
           </div>
         </div>
       </div>
