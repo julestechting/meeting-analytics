@@ -2,6 +2,7 @@ var React = require('react');
 
 // Import components
 var MAAutoComplete = require('./autocomplete');
+var MACircleScore = require('./circle-score');
 
 var MACentralStat = React.createClass({
 
@@ -81,6 +82,7 @@ var MACentralStat = React.createClass({
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Attendance</strong></div>
             <div className="w3-bar-item w3-xlarge">{score}</div>
+            <div className="w3-bar-item"><MACircleScore score={score}/></div>
           </div>
         </div>
         <div className="w3-col s4">

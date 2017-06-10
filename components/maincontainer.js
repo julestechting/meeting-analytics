@@ -290,10 +290,10 @@ var MAMainCont = React.createClass({
           switch (statType) {
             case "AttSc":
               if ( res.hits.total > 0 ) {
-                const score = ((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0) + '%';
+                const score = ((res.aggregations.score.doc_count / res.hits.total)*100).toFixed(0);
                 var onTime = "No Data"
                 if ( res.aggregations.score.doc_count > 0 ) {
-                  onTime = (((1 - res.aggregations.late.doc_count / res.aggregations.score.doc_count))*100).toFixed(0) + '%';
+                  onTime = (((1 - res.aggregations.late.doc_count / res.aggregations.score.doc_count))*100).toFixed(0);
                 }
                 statCallback(score, onTime, res.hits.total);
               } else {
@@ -305,8 +305,8 @@ var MAMainCont = React.createClass({
               validAccept = res.hits.total - res.aggregations.void.doc_count;
               if ( validAccept > 0 ) {
                 const scoreArray = [
-                  ((res.aggregations.score.doc_count / validAccept)*100).toFixed(0) + '%',
-                  ((1 - (res.aggregations.oppScore.doc_count / validAccept))*100).toFixed(0) + '%'
+                  ((res.aggregations.score.doc_count / validAccept)*100).toFixed(0),
+                  ((1 - (res.aggregations.oppScore.doc_count / validAccept))*100).toFixed(0)
                 ];
                 statCallback(scoreArray);
               } else {
@@ -319,7 +319,7 @@ var MAMainCont = React.createClass({
                 const day = parseInt(bucket.key);
                 // day-1 is because Monday is "1" and array starts at 0
                 if ( day > 0 ) {
-                  scorePD[day-1] = (((bucket.score.doc_count / bucket.doc_count)*100).toFixed(0) + '%');
+                  scorePD[day-1] = ((bucket.score.doc_count / bucket.doc_count)*100).toFixed(0);
                 }
               });
               statCallback(scorePD);
