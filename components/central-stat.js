@@ -72,23 +72,25 @@ var MACentralStat = React.createClass({
   displayAttendanceScore: function (score, onTime, totalHits) {
     const AttSc = (
       <div className="w3-row-padding">
-        <div className="w3-col s4">
+        <div className="w3-col s12 m4 l3">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Total records</strong></div>
             <div className="w3-bar-item w3-xlarge">{totalHits}</div>
           </div>
         </div>
-        <div className="w3-col s4">
+        <div className="w3-col s12 m4 l3">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Attendance</strong></div>
-            <div className="w3-bar-item w3-xlarge">{score}</div>
-            <div className="w3-bar-item"><MACircleScore score={score}/></div>
+            <div className="w3-bar-item"><MACircleScore score={score} cls="attsc"/></div>
           </div>
         </div>
-        <div className="w3-col s4">
+        <div className="w3-col s12 m4 l3">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>On-Time</strong></div>
-            <div className="w3-bar-item w3-xlarge">{onTime}</div>
+            {(onTime == "No Data") ?
+              <div className="w3-bar-item w3-xlarge">{onTime}</div> :
+              <div className="w3-bar-item"><MACircleScore score={onTime} cls="attot"/></div>
+            }
           </div>
         </div>
       </div>
@@ -129,16 +131,22 @@ var MACentralStat = React.createClass({
   displayAcceptScore: function (scoreArray) {
     const AccSc = (
       <div className="w3-row-padding">
-        <div className="w3-col s6">
+        <div className="w3-col s12 m4 l3">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Accept</strong></div>
-            <div className="w3-bar-item w3-xlarge">{scoreArray[0]}</div>
+            {(scoreArray[0] == "No Data") ?
+              <div className="w3-bar-item w3-xlarge">{scoreArray[0]}</div> :
+              <div className="w3-bar-item"><MACircleScore score={scoreArray[0]} cls="accac"/></div>
+            }
           </div>
         </div>
-        <div className="w3-col s6">
+        <div className="w3-col s12 m4 l3">
           <div className="w3-bar-block w3-center w3-border w3-border-cyan">
             <div className="w3-bar-item w3-cyan w3-text-white"><strong>Answer</strong></div>
-            <div className="w3-bar-item w3-xlarge">{scoreArray[1]}</div>
+            {(scoreArray[1] == "No Data") ?
+              <div className="w3-bar-item w3-xlarge">{scoreArray[1]}</div> :
+              <div className="w3-bar-item"><MACircleScore score={scoreArray[1]} cls="accan"/></div>
+            }
           </div>
         </div>
       </div>

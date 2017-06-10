@@ -9,7 +9,8 @@ var MACircleScore = React.createClass({
     foregroundColorFill: React.PropTypes.string,
     backgroundColorFill: React.PropTypes.string,
     textClass: React.PropTypes.string,
-    format: React.PropTypes.func
+    format: React.PropTypes.func,
+    cls: React.PropTypes.string.isRequired
   },
 
   getDefaultProps: function () {
@@ -31,7 +32,6 @@ var MACircleScore = React.createClass({
 
   resizeHandler: function () {
     this.redrawCircleScore();
-    //this.forceUpdate();
   },
 
   drawCircle: function (radius) {
@@ -49,6 +49,7 @@ var MACircleScore = React.createClass({
     const circle = d3.select(this.refs.circle).append('svg')
       .attr('width', radius * 2)
       .attr('height', radius * 2)
+      .attr('class', this.props.cls)
       .append('g')
       .attr('transform', `translate(${radius}, ${radius})`);
 
@@ -74,12 +75,9 @@ var MACircleScore = React.createClass({
   },
 
   redrawCircleScore: function () {
-    d3.select("svg").remove();
+    const selector = "svg." + this.props.cls;
+    d3.select(selector).remove();
     this.drawCircleScore();
-  },
-
-  componentDidUpdate: function () {
-    //this.redrawCircleScore();
   },
 
   render: function () {
