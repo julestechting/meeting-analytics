@@ -57,12 +57,14 @@ var MACircleScore = React.createClass({
     circle.append('path')
       .datum({endAngle: tau})
       .attr('fill', this.props.backgroundColorFill)
+      .attr('stroke-linecap', "round")
       .attr('d', this.drawCircle(radius));
 
     // Add foreground
     circle.append('path')
       .datum({endAngle: tau * decScore})
       .attr('fill', this.props.foregroundColorFill)
+      .attr('stroke-linecap', "round")
       .attr('d', this.drawCircle(radius));
 
     // Add label
